@@ -1,0 +1,306 @@
+<?php
+session_start();
+/*
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
+*/
+
+// Inclure les fichiers nécessaires
+require_once 'app/controllers/UserController.php';
+require_once 'app/controllers/AdminController.php';
+require_once 'app/controllers/MedecinController.php';
+require_once 'app/controllers/SecretaireController.php';
+require_once 'app/controllers/SecretaireController.php';
+
+// Créer les instances des contrôleurs nécessaires
+$userController = new UserController();
+$adminController = new AdminController();
+$medecinController = new MedecinController();
+$secretaireController = new SecretaireController();
+
+
+// Déterminer l'action à effectuer (utiliser une valeur par défaut si aucune action spécifiée)
+$action = isset($_GET['action']) ? $_GET['action'] : 'default';
+
+// Traitement en fonction de l'action spécifiée
+switch ($action) {
+    case 'showProfile':
+        $userId = $_GET['id'];
+        if (!$userController->isValidUserId($userId)) {
+            $userController->redirect('errorPage.php?message=ID utilisateur invalide.');
+        }
+        $userController->showProfile($userId);
+        break;
+
+   // All Dashboard Admin
+   case 'adminDashboard':
+       $adminController->dashboard();
+       break;
+
+   case 'dashboardUser':
+       $adminController->dashboardUser();
+       break;
+
+   case 'dashboardMedecin':
+       $adminController->dashboardMedecin();
+       break;
+
+   case 'dashboardPatient':
+       $adminController->dashboardPatient();
+       break;
+
+   case 'dashboardConges':
+       $adminController->dashboardConges();
+       break;
+
+   case 'dashboardFactures':
+       $adminController->dashboardFactures();
+       break;
+
+   case 'dashboardHistorique':
+       $adminController->dashboardHistorique();
+       break;
+
+   case 'dashboardHoraires':
+       $adminController->dashboardHoraires();
+       break;
+
+   case 'dashboardMedecinServices':
+       $adminController->dashboardMedecinServices();
+       break;
+
+   case 'dashboardNotes':
+       $adminController->dashboardNotes();
+       break;
+
+   case 'dashboardRdv':
+       $adminController->dashboardRdv();
+       break;
+
+   case 'dashboardServices':
+       $adminController->dashboardServices();
+       break;
+
+    case 'dashboardSecretaire':
+        $adminController->dashboardSecretaire();
+        break;
+        
+
+       /**
+        * Méthodes medecin
+        */
+
+       case 'homeMedecin':
+           $medecinController->homeMedecin();
+           break;
+       case 'listMedecins':
+           $medecinController->listMedecins();
+           break;
+       case 'viewMedecin':
+           $id = $_GET['id'];
+           $medecinController->viewMedecin($id);
+           break;
+
+    /**
+     * Login et Register et leur formulaire
+     */
+    case 'showLoginForm':
+        $userController->showLoginForm();
+        break;
+    case 'showRegistrationForm':
+        $userController->home();
+        $userController->showRegistrationForm();
+        break;
+    case 'login':
+        $userController->login($_POST);
+        break;
+    case 'register':
+        $userController->home();
+        $userController->register($_POST);
+        break;
+
+      /**
+       * Edit, Update, Delete User
+       */
+
+    case 'editUser':
+      $adminController->editUser($_GET['id']);
+      break;
+    case 'updateUser':
+      $adminController->updateUser($_GET['id'], $_POST);
+      break;
+    case 'deleteUser':
+       $adminController->deleteUser($_POST['id']);
+       break;
+     /**
+      * Edit, Update, Delete Medecin
+      */
+      case 'editMedecin':
+          $adminController->editMedecin($_GET['id']);
+          break;
+      case 'updateMedecin':
+          $adminController->updateMedecin($_GET['id'], $_POST);
+          break;
+      case 'deleteMedecin':
+          $adminController->deleteMedecin($_POST['id']);
+          break;
+     /**
+      * Edit, Update, Delete Patient
+      */
+     case 'editPatient':
+       $adminController->editPatient($_GET['id']);
+       break;
+    case 'updatePatient':
+       $adminController->updatePatient($_GET['id'], $_POST);
+       break;
+    case 'deletePatient':
+       $adminController->deletePatient($_GET['id']);
+       break;
+
+ 
+  /**
+  * Edit, Update, Delete Secretaire
+  */
+  case 'editSecretaire':
+      $adminController->editSecretaire($_GET['id']);
+      break;
+  case 'updateSecretaire':
+      $adminController->updateSecretaire($_GET['id'], $_POST);
+      break;
+  case 'deleteSecretaire':
+      $adminController->deleteSecretaire($_POST['id']);
+      break;
+
+      /**
+       * Edit, Update, Delete Conges
+       */
+
+    case 'editConges':
+      $adminController->editConges($_GET['id']);
+      break;
+    case 'updateConges':
+      $adminController->updateConges($_GET['id'], $_POST);
+      break;
+    case 'deleteConges':
+       $adminController->deleteConges($_POST['id']);
+       break;
+
+      /**
+       * Edit, Update, Delete Factures
+       */
+
+    case 'editFactures':
+      $adminController->editFactures($_GET['id']);
+      break;
+    case 'updateFactures':
+      $adminController->updateFactures($_GET['id'], $_POST);
+      break;
+    case 'deleteFactures':
+       $adminController->deleteFactures($_POST['id']);
+       break;
+
+      /**
+       * Edit, Update, Delete Historique
+       */
+
+    case 'editHistorique':
+      $adminController->editHistorique($_GET['id']);
+      break;
+    case 'updateHistorique':
+      $adminController->updateHistorique($_GET['id'], $_POST);
+      break;
+    case 'deleteHistorique':
+       $adminController->deleteHistorique($_POST['id']);
+       break;
+
+      /**
+       * Edit, Update, Delete Horaires
+       */
+
+    case 'editHoraires':
+      $adminController->editHoraires($_GET['id']);
+      break;
+    case 'updateHoraires':
+      $adminController->updateHoraires($_GET['id'], $_POST);
+      break;
+    case 'deleteHoraires':
+       $adminController->deleteHoraires($_POST['id']);
+       break;
+
+      /**
+       * Edit, Update, Delete MedecinService
+       */
+
+       case 'editMedecinServices':
+           $adminController->editMedecinServices($_GET['medecin_id'], $_GET['service_id']);
+           break;
+       case 'updateMedecinServices':
+           $adminController->updateMedecinServices($_GET['medecin_id'], $_GET['service_id'], $_POST);
+           break;
+       case 'deleteMedecinServices':
+           $adminController->deleteMedecinServices();
+           break;
+
+      /**
+       * Edit, Update, Delete Notes
+       */
+
+    case 'editNotes':
+      $adminController->editNotes($_GET['id']);
+      break;
+    case 'updateNotes':
+      $adminController->updateNotes($_GET['id'], $_POST);
+      break;
+    case 'deleteNotes':
+       $adminController->deleteNotes($_POST['id']);
+       break;
+
+      /**
+       * Edit, Update, Delete Rdv
+       */
+
+    case 'editRdv':
+      $adminController->editRdv($_GET['id']);
+      break;
+    case 'updateRdv':
+      $adminController->updateRdv($_GET['id'], $_POST);
+      break;
+    case 'deleteRdv':
+       $adminController->deleteRdv($_POST['id']);
+       break;
+
+      /**
+       * Edit, Update, Delete Services
+       */
+
+    case 'editServices':
+      $adminController->editServices($_GET['id']);
+      break;
+    case 'updateServices':
+      $adminController->updateServices($_GET['id'], $_POST);
+      break;
+    case 'deleteServices':
+       $adminController->deleteServices($_POST['id']);
+       break;
+
+  case 'logout':
+       $userController->logout();
+       break;
+
+  case 'homeMedecin':
+  $medecinController->homeMedecin();
+  break;
+
+  // Afficher le contact
+  case 'contact':
+    $userController->contact();
+    break;
+
+  default:
+       $userController->home();
+       break;
+}
+
+
+include 'app/views/templates/footer.php';

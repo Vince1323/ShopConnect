@@ -1,0 +1,449 @@
+---  AdminController.php : 
+
+<?php
+require_once 'app/models/UserModel.php';
+require_once 'app/models/ArticleModel.php';
+require_once 'app/models/CategoryModel.php';
+require_once 'app/views/admin_view.php';
+require_once 'app/views/article_view.php';
+require_once 'app/views/category_view.php';
+
+
+
+class AdminController extends BaseController {
+    private $userModel;
+    private $articleModel;
+    private $categoryModel;
+    private $adminView;
+    private $articleView;
+    private $categoryView;
+
+    public function __construct() {
+        $this->userModel = new UserModel();
+        $this->articleModel = new ArticleModel();
+        $this->categoryModel = new CategoryModel();
+        $this->adminView = new AdminView();
+        $this->articleView = new ArticleView();
+        $this->categoryView = new CategoryView();
+    }
+    /**
+     * Fonctions Admin (Dashboard)
+     */
+    public function isUserAdmin() {
+        return isset($_SESSION['role']) && $_SESSION['role'] === 'Admin';
+    }
+
+    public function dashboard() {
+        if (!$this->isUserAdmin()) {
+            $this->handleError('Accès refusé. Vous devez être connecté en tant qu\'administrateur.');
+            return;
+        }
+
+        $this->showDashboard();
+    }
+
+    private function showDashboard() {
+        try {
+            $users = $this->userModel->getUsers();
+
+            $this->adminView->AdminDashboard($users);
+        } catch (Exception $e) {
+            $this->handleError($e->getMessage());
+        }
+    }
+
+    /**
+     * Fonctions Edit (User)
+     */
+     public function editUser($id) {
+         $user = $this->userModel->getUserById($id);
+         if ($user) {
+             $this->adminView->renderEditUserForm($user);
+         } else {
+             // Gérer l'erreur
+             echo "Erreur : L'utilisateur n'existe pas.";
+         }
+      }
+      /**
+       * Fonctions Update (User)
+       */
+
+    public function updateUser($id, $data) {
+        $result = $this->userModel->updateById($id, $data);
+        if ($result) {
+          header("Location: index.php?action=adminDashboard");
+          exit;
+        } else {
+        // Gérer l'erreur
+          echo "Erreur : Échec de la mise à jour.";
+        }
+      }
+
+    /**
+    * Fonctions Delete (User)
+    */
+      public function deleteUser() {
+        $id = $_POST['id'];
+        $userModel = new UserModel();
+        $userModel->deleteById($id);
+        header("Location: index.php?action=adminDashboard");  // Redirige vers le tableau de bord après la suppression
+      }
+
+}
+
+
+---------------------------------
+---  ArticleController.php :  ---
+---------------------------------
+<?php
+require_once 'app/models/ArticleModel.php';
+require_once 'app/views/article_view.php';
+require_once 'app/controllers/BaseController.php';
+
+class ArticleController extends BaseController {
+    private $articleModel;
+    private $articleView;
+
+    public function __construct() {
+        $this->articleModel = new ArticleModel();
+        $this->articleView = new ArticleView();
+    }
+
+    public function listArticles() {
+        $articles = $this->articleModel->getArticles();
+        $this->articleView->displayArticles($articles);
+    }
+
+    public function viewArticle($articleId) {
+        $article = $this->articleModel->getArticleById($articleId);
+        if ($article) {
+            $this->articleView->displaySingleArticle($article);
+        } else {
+            echo "Article introuvable.";
+        }
+    }
+
+    public function createArticle($titre, $contenu, $categorie_id) {
+        $success = $this->articleModel->createArticle($titre, $contenu, $categorie_id);
+        if ($success) {
+            echo "Article créé avec succès!";
+        } else {
+            echo "Erreur lors de la création de l'article.";
+        }
+    }
+
+}
+
+ ?>
+
+-----------------------------
+---  BaseController.php:  ---
+-----------------------------
+<?php
+class BaseController {
+    protected $db;
+
+    public function __construct($dbConnection) {
+        $this->db = $dbConnection;
+    }
+
+    // Vérifie si l'utilisateur est connecté
+    protected function isLoggedIn() {
+        return isset($_SESSION['user_id']);
+    }
+
+    // Vérifie si l'utilisateur est un administrateur
+    protected function isAdmin() {
+        return $this->isLoggedIn() && isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    }
+
+    // Redirige l'utilisateur vers un emplacement spécifique
+    protected function redirect($location) {
+        header('Location: ' . $location);
+        exit();
+    }
+
+    // Chargement des vues
+    protected function loadView($viewName, $data = []) {
+        extract($data);  // Transforme les clés de l'array $data en variables
+        require_once "app/views/{$viewName}.php";
+    }
+    // Gère les erreurs
+    protected function handleError($errorMessage) {
+        // Enregistre l'erreur ou redirige vers une page d'erreur
+        // Pour cet exemple, on redirige vers une page d'erreur avec le message
+        $this->redirect('index.php?action=error&message=' . urlencode($errorMessage));
+    }
+
+    
+}
+
+---------------------------------
+---  CategoryController.php:  ---
+---------------------------------
+<?php
+
+require_once 'app/models/CategoryModel.php';
+require_once 'app/views/category_view.php';
+require_once 'app/controllers/BaseController.php';
+
+class CategoryController extends BaseController {
+    private $categoryModel;
+    private $categoryView;
+
+    public function __construct() {
+        $this->categoryModel = new CategoryModel();
+        $this->categoryView = new CategoryView();
+    }
+
+
+    public function listCategories() {
+        $categories = $this->categoryModel->getAllCategories();
+        $this->categoryView->displayCategories($categories);
+    }
+
+    public function viewCategory($categoryId) {
+        $category = $this->categoryModel->getCategoryById($categoryId);
+        if ($category) {
+            $this->categoryView->displaySingleCategory($category);
+        } else {
+            echo "Catégorie introuvable.";
+        }
+    }
+
+    public function createCategory($name, $description) {
+        $success = $this->categoryModel->createCategory($name, $description);
+        if ($success) {
+            echo "Catégorie créée avec succès!";
+        } else {
+            echo "Erreur lors de la création de la catégorie.";
+        }
+    }
+
+}
+ ?>
+---------------------------------
+---  MedecinController.php:  ---
+---------------------------------
+<?php
+require_once 'app/models/MedecinModel.php';
+require_once 'app/views/medecin_view.php';
+require_once 'app/controllers/BaseController.php';
+
+
+class MedecinController extends BaseController {
+    private $medecinModel;
+    private $medecinView;
+
+    public function __construct() {
+        $this->medecinModel = new MedecinModel();
+        $this->medecinView = new MedecinView();
+    }
+
+    public function homeMedecin() {
+        $this->medecinView->renderMedecinList($medecins);
+    }
+
+    public function listMedecins() {
+        $medecins = $this->medecinModel->getAllMedecins();
+        $this->medecinsView->displayMedecins($medecins);
+    }
+
+    public function viewMedecin($id) {
+        $medecin = $this->medecinModel->getMedecinById($id);
+        if ($medecin) {
+            $this->medecinView->displaySingleMedecin($medecin);
+        } else {
+            echo "Medecin introuvable.";
+        }
+    }
+
+    public function createMedecin($nom, $prenom, $specialite, $email, $telephone) {
+        $success = $this->medecinModel->createMedecin($nom, $prenom, $specialite, $email, $telephone);
+        if ($success) {
+            echo "Medecin créé avec succès!";
+        } else {
+            echo "Erreur lors de la création du medecin.";
+        }
+    }
+
+}
+?>
+--------------------------------
+---   UserController.php:    ---
+--------------------------------
+<?php
+require_once 'app/models/UserModel.php';
+require_once 'app/views/user_view.php';
+require_once 'app/models/ArticleModel.php';
+require_once 'BaseController.php';
+//require_once 'app/models/MedecinModel.php';
+require_once 'app/views/medecin_view.php';
+require_once 'app/views/contact_view.php';
+
+class UserController extends BaseController {
+    private $articleModel;
+    private $userModel;
+    private $userView;
+    private $medecinModel;
+    private $medecinView;
+    private $contactView;
+
+    public function __construct() {
+        $this->articleModel = new ArticleModel();
+        $this->userModel = new UserModel();
+        $this->userView = new UserView();
+        $this->medecinView = new MedecinView();
+        $this->contactView = new ContactView();
+    }
+
+    public function home() {
+        $this->userView->renderHome();
+      }
+
+    public function contact() {
+        $this->contactView->renderContact();
+      }
+
+    public function showLoginForm() {
+        $this->userView->displayLoginForm();
+    }
+
+    public function showRegistrationForm() {
+        $this->userView->displayRegistrationForm();
+    }
+
+    public function login($postData) {
+        $email = $postData['email'] ?? null;
+        $password = $postData['password'] ?? null;
+
+        if(!$email || !$password) {
+            $this->showLoginForm("Email ou mot de passe manquant");
+            return;
+        }
+
+        $user = $this->userModel->authenticateUser($email, $password);
+
+        if ($user) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role'] = $user['role'];
+
+            if ($_SESSION['role'] === 'Admin') {
+                $this->redirect("index.php?action=adminDashboard");
+                return;
+            }
+
+            $this->redirect("index.php");
+        } else {
+            $this->showLoginForm("Email ou mot de passe incorrect");
+        }
+    }
+
+    public function register($postData) {
+        $username = $postData['nom'] ?? null;
+        $password = $postData['password'] ?? null;
+        $email = $postData['email'] ?? null;
+
+        if (!$username || !$password || !$email) {
+            $this->showRegistrationForm("Veuillez remplir tous les champs requis");
+            return;
+        }
+
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $role = "Visiteur";
+        $result = $this->userModel->registerUser($username, $hashedPassword, $email, $role);
+
+        if ($result) {
+            $this->redirect("index.php");
+        } else {
+            echo "Erreur lors de l'enregistrement.";
+        }
+    }
+
+    public function logout() {
+        // Démarre la session si elle n'est pas déjà démarrée
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Supprime toutes les variables de session
+        $_SESSION = array();
+
+        // Détruit complètement la session
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+        }
+        session_destroy();
+
+        // Redirige l'utilisateur vers la page d'accueil
+        $this->redirect("index.php");
+    }
+
+
+}
+
+--- Secretaire_Controller.php :
+<?php
+require_once 'BaseController.php';
+require_once 'app/models/SecretaireModel.php';
+require_once 'app/views/secretaire_view.php';
+
+class SecretaireController extends BaseController {
+    private $secretaireModel;
+    private $secretaireView;
+
+    public function __construct() {
+        $this->secretaireModel = new SecretaireModel();
+        $this->secretaireView = new SecretaireView();
+    }
+
+    // Afficher tous les secrétaires
+    public function listerSecretaires() {
+        $secretaires = $this->secretaireModel->obtenirTousLesSecretaires();
+        $this->secretaireView->afficherSecretaires($secretaires);
+    }
+
+    // Afficher le formulaire de création de secrétaire
+    public function montrerFormulaireCreation() {
+        $this->secretaireView->afficherFormulaireSecretaire();
+    }
+
+    // Créer un nouveau secrétaire
+    public function creerSecretaire($donnees) {
+        $resultat = $this->secretaireModel->creerSecretaire($donnees['utilisateur_id'], $donnees['nom'], $donnees['prenom'], $donnees['telephone']);
+        if ($resultat) {
+            $this->redirect('index.php?action=listerSecretaires');
+        } else {
+            echo "Erreur lors de la création du secrétaire.";
+        }
+    }
+
+    // Afficher le formulaire de modification de secrétaire
+    public function montrerFormulaireModification($id) {
+        $secretaire = $this->secretaireModel->obtenirSecretaireParId($id);
+        $this->secretaireView->afficherFormulaireSecretaire($secretaire);
+    }
+
+    // Mettre à jour les informations d'un secrétaire
+    public function mettreAJourSecretaire($id, $donnees) {
+        $resultat = $this->secretaireModel->mettreAJourSecretaire($id, $donnees['nom'], $donnees['prenom'], $donnees['telephone']);
+        if ($resultat) {
+            $this->redirect('index.php?action=listerSecretaires');
+        } else {
+            echo "Erreur lors de la mise à jour du secrétaire.";
+        }
+    }
+
+    // Supprimer un secrétaire
+    public function supprimerSecretaire($id) {
+        $resultat = $this->secretaireModel->supprimerSecretaire($id);
+        if ($resultat) {
+            $this->redirect('index.php?action=listerSecretaires');
+        } else {
+            echo "Erreur lors de la suppression du secrétaire.";
+        }
+    }
+}
+?>
+

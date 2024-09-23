@@ -1,0 +1,1021 @@
+--- header.php
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?php echo isset($title) ? htmlspecialchars($title) : 'Medilab'; ?></title>
+  <meta name="description" content="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>">
+  <meta name="keywords" content="<?php echo isset($keywords) ? htmlspecialchars($keywords) : ''; ?>">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Fichiers CSS des bibliothèques via CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/2.5.0/remixicon.css" rel="stylesheet">
+  <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5/main.min.css" rel="stylesheet">
+
+  <!-- Votre propre CSS depuis le dossier local -->
+  <link href="app/views/templates/css/style.css" rel="stylesheet">
+
+
+  <!-- jQuery (necessary for FullCalendar's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+
+  <!-- Fichiers JS des bibliothèques via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+</head>
+<body>
+  <!-- ======= Barre du Haut ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex justify-content-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+        <i class="bi bi-phone"></i> +32 04 04 04 04
+      </div>
+      <div class="d-none d-lg-flex social-links align-items-center">
+        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= En-tête ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+      <h1 class="logo me-auto"><a href="index.php">Medilab</a></h1>
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="index.php">Accueil</a></li>
+          <li><a class="nav-link scrollto" href="index.php?action=register">Register Tempo</a></li>
+          <li><a class="nav-link scrollto" href="#services">Services</a></li>
+          <li><a class="nav-link scrollto" href="index.php?action=homeMedecin">Médecins</a></li>
+          <?php if (isset($_SESSION['user_id'])): ?>
+          <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+          <li class="dropdown">
+            <a href="index.php?action=adminDashboard" class="btn btn-warning"><span>Tableau de bord</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Option 1</a></li>
+              <li class="dropdown">
+                <a href="#"><span>Option 2</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="#">Option 2.1</a></li>
+                  <li><a href="#">Option 2.2</a></li>
+                  <li><a href="#">Option 2.3</a></li>
+                  <li><a href="#">Option 2.4</a></li>
+                  <li><a href="#">Option 2.5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Option 3</a></li>
+              <li><a href="#">Option 4</a></li>
+            </ul>
+          </li>
+        <?php endif; ?>
+        <?php endif; ?>
+          <li><a class="nav-link scrollto" href="index.php?action=contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="index.php?action=logout" class="appointment-btn scrollto">
+          <span class="d-none d-md-inline">Déconnexion</span>
+        </a>
+      <?php else: ?>
+        <a href="index.php?action=login" class="appointment-btn scrollto">
+            <span class="d-none d-md-inline">Se connecter</span>
+        </a>
+      <?php endif; ?>
+    </div>
+  </header><!-- Fin En-tête -->
+  <div class="container mt-5">
+
+--- footer.php
+<!-- ======= Pied de page ======= -->
+ <footer id="footer">
+
+<div class="footer-top">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 footer-contact">
+        <h3>Medilab</h3>
+        <p>
+          Rue Hazinelle 13 <br>
+          Liège, 4000<br>
+          Belgique <br><br>
+          <strong>Téléphone:</strong> +32 04 44 44 44<br>
+          <strong>Email:</strong> Medic@example.com<br>
+        </p>
+      </div>
+
+      <div class="col-lg-2 col-md-6 footer-links">
+        <h4>Liens Utiles</h4>
+        <ul>
+          <li><i class="bx bx-chevron-right"></i> <a href="index.php">Accueil</a></li>
+          <li><i class="bx bx-chevron-right"></i> <a href="#">À propos de nous</a></li>
+          <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-6 footer-links">
+        <h4>Nos Services</h4>
+        <ul>
+          <li><i class="bx bx-chevron-right"></i> <a href="#">Medecin</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container d-md-flex py-4">
+
+  <div class="me-md-auto text-center text-md-start">
+    <div class="copyright">
+      &copy; Droits d'auteur <strong><span>Medilab</span></strong>. Tous droits réservés
+    </div>
+  </div>
+  <div class="social-links text-center text-md-right pt-3 pt-md-0">
+    <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+    <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+    <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+    <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+    <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+  </div>
+</div>
+</footer><!-- Fin Pied de page -->
+
+ <!-- FullCalendar JS and dependencies -->
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5/main.min.js"></script>
+    <!-- Inclure le fichier JavaScript depuis le dossier "js" -->
+    <script src="app/views/templates/js/script.js"></script>
+
+</body>
+
+
+--- container.php
+<main id="main">
+    <!-- Section Breadcrumbs -->
+    <section class="breadcrumbs">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Page Intérieure</h2>
+          <ol>
+            <li><a href="index.php">Accueil</a></li>
+            <li>Page Intérieure</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section de contenu principale -->
+    <section class="inner-page">
+      <div class="container">
+        <p>Exemple de modèle de page intérieure</p>
+      </div>
+    </section>
+
+        <!-- Section Calendrier -->
+        <section class="calendar-section">
+      <div class="container">
+        <div id="calendar"></div>
+      </div>
+    </section>
+
+  </main>
+
+--- admin_view.php
+
+<?php
+require_once 'form_view.php';
+
+class AdminView {
+
+    public function renderHeader() {
+       include 'templates/header.php';
+    }
+
+    public function renderFooter() {
+        include 'templates/footer.php';
+    }
+        /**
+         * Affiche un tableau à partir d'un titre, d'un tableau de données et de noms de colonnes personnalisés.
+         */
+        private function renderTable($title, $data, $rowCallback, $columns) {
+            echo "<h2>{$title}</h2>";
+            echo "<table class='table' id='dataTable'>"; // Ajout de l'ID 'dataTable'.
+            echo "<thead><tr>";
+
+            // Affichage des en-têtes de colonne personnalisés
+            foreach ($columns as $column) {
+                echo "<th>{$column}</th>";
+            }
+
+            echo "</tr></thead>";
+            echo "<tbody>";
+
+            foreach ($data as $item) {
+                $row = $rowCallback($item);
+                echo "<tr>";
+                foreach ($row as $cell) {
+                    echo "<td>{$cell}</td>";
+                }
+                echo "</tr>";
+            }
+
+            echo "</tbody>";
+            echo "</table>";
+        }
+
+        /**
+         * Ajoute le script DataTables.
+         */
+        private function renderDataTableScript() {
+            echo <<<HTML
+            <script>
+            $(document).ready(function() {
+                $('#dataTable').DataTable({
+                    "paging": true,
+                    "pageLength": 10
+                });
+            });
+            </script>
+            HTML;
+        }
+
+
+        /**
+         * Affiche le tableau de bord de l'administrateur.
+         *
+         * @param array $users Liste des utilisateurs.
+         */
+        public function adminDashboard($users) {
+            $this->renderHeader();
+
+            echo <<<HTML
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#users">Utilisateurs</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="users">
+    HTML;
+
+    // Utilisateurs
+    $userColumns = ['Nom', 'Email', 'Rôle', 'Actions'];
+    $this->renderTable("Liste des utilisateurs", $users, function($user) {
+        return [
+            htmlspecialchars($user['nom']),
+            htmlspecialchars($user['email']),
+            htmlspecialchars($user['role']),
+            "<a href='index.php?action=editUser&id={$user['id']}' class='btn btn-primary'>Modifier</a>
+            <form method='post' action='index.php?action=deleteUser' style='display: inline;'>
+            <input type='hidden' name='id' value='{$user['id']}'>
+            <button class='btn btn-danger' type='submit'>Supprimer</button>
+            </form>"
+        ];
+    }, $userColumns);
+
+    echo <<<HTML
+    </div>
+</div> <!-- Fin de la tab-content -->
+</div> <!-- Fin du container -->
+HTML;
+
+    $this->renderDataTableScript();
+}
+
+public function renderEditUserForm($user) {
+    $this->renderHeader();
+
+    // Création d'une nouvelle instance de FormView
+    $form = new FormView("index.php?action=updateUser&id={$user['id']}");
+
+    // Ajout des champs au formulaire
+    $form->addField('nom', 'nom', 'text', 'Nom:', $user['nom']);
+    $form->addField('email', 'email', 'text', 'Email:', $user['email']);
+    $form->addSelectField('role', 'role', 'Rôle:', [
+        'Admin' => 'Admin',
+        'Medecin' => 'Medecin',
+        'Secretaire' => 'Secretaire'
+    ], $user['role']);
+
+    // Affichage du formulaire
+    echo "<div class='container mt-5'>
+            <div class='row'>
+                <div class='col-md-6 offset-md-3'>
+                    <div class='card'>
+                        <div class='card-header'>Modifier l'utilisateur</div>
+                        <div class='card-body'>";
+
+    echo $form->build();
+
+    echo "         </div>
+                    </div>
+                </div>
+            </div>
+          </div>";
+          // Ajout de JavaScript pour la validation du formulaire
+          echo "<script>
+                document.querySelector('form').onsubmit = function(event) {
+                    let nom = document.querySelector('[name=\"nom\"]').value;
+                    let email = document.querySelector('[name=\"email\"]').value;
+
+                    if(nom === '' || email === '') {
+                        alert('Veuillez remplir tous les champs.');
+                        event.preventDefault(); // Empêche la soumission du formulaire
+                    }
+                };
+                </script>";
+
+          $this->renderFooter();
+      }
+
+      private function isSelected($currentRole, $roleOption) {
+          return $currentRole == $roleOption ? "selected" : "";
+      }
+  }
+
+?>
+
+--- article_view.php
+<?php
+require_once 'base_view.php';
+require_once 'admin_view.php';
+require_once 'form_view.php';
+
+class ArticleView extends BaseView {
+
+    public function displayArticles($articles) {
+        echo "<h1>Articles</h1>";
+        foreach ($articles as $article) {
+            echo "<div>";
+            echo "<h2>{$article['titre']}</h2>";
+            echo "<p>{$article['contenu']}</p>";
+            echo "</div>";
+        }
+    }
+
+    public function displaySingleArticle($article) {
+        echo "<h1>{$article['titre']}</h1>";
+        echo "<p>{$article['contenu']}</p>";
+    }
+
+    public function renderEditArticleForm($article) {
+        $this->renderHeader();
+
+        // Création d'une nouvelle instance de FormView
+        $form = new FormView("index.php?action=updateArticle&id={$article['id']}");
+
+        // Ajout des champs au formulaire
+        $form->addField('titre', 'titre', 'text', 'Titre:', $article['titre'])
+             ->addField('contenu', 'contenu', 'text', 'Contenu:', $article['contenu'])
+             ->addField('categorie_id', 'categorie_id', 'number', 'Categorie:', $article['categorie_id']);
+
+        // Affichage du formulaire
+        echo "<div class='container mt-5'>
+                <div class='row'>
+                    <div class='col-md-6 offset-md-3'>
+                        <div class='card'>
+                            <div class='card-header'>Modifier l'article</div>
+                            <div class='card-body'>";
+
+        echo $form->build();
+
+        echo "         </div>
+                        </div>
+                    </div>
+                </div>
+              </div>";
+
+              // Ajout de JavaScript pour la validation du formulaire
+       echo "<script>
+               document.querySelector('form').onsubmit = function(event) {
+                   let titre = document.querySelector('[name=\"titre\"]').value;
+                   let contenu = document.querySelector('[name=\"contenu\"]').value;
+                   let categorie_id = document.querySelector('[name=\"categorie_id\"]').value;
+
+                   if(titre === '' || contenu === '' || categorie_id === '') {
+                       alert('Veuillez remplir tous les champs.');
+                       event.preventDefault(); // Empêche la soumission du formulaire
+                   }
+               };
+             </script>";
+
+        $this->renderFooter();
+    }
+
+    public function showArticles($articles) {
+
+    include 'templates/header.php';
+
+    echo "<h1>Articles</h1>";
+    foreach ($articles as $article) {
+        echo "<div>";
+        echo "<h2>" . htmlspecialchars($article['titre']) . "</h2>";
+        echo "<p>" . htmlspecialchars($article['contenu']) . "</p>";
+
+        echo "</div>";
+    }
+
+  }
+
+}
+
+
+--- base_view.php
+<?php
+class BaseView {
+    public function loadTemplate($templateName, $data = []) {
+        // Transforme les clés du tableau $data en variables
+        extract($data);
+
+        require_once "templates/$templateName.php";
+    }
+
+    public function renderHeader() {
+       include 'templates/header.php';
+    }
+    
+    public function renderContainer() {
+        include 'templates/container.php';
+     }
+
+    public function renderFooter() {
+        include 'templates/footer.php';
+    }
+
+}
+
+--- contact_view.php
+<?php
+
+require_once 'base_view.php';
+require_once 'admin_view.php';
+require_once 'form_view.php';
+require_once 'form_container.php';
+
+class ContactView extends BaseView {
+
+    public function renderHeader() {
+        include 'templates/header.php';
+    }
+
+    public function renderFooter() {
+        include 'templates/footer.php';
+    }
+
+    public function renderContact() {
+
+        $this->renderHeader(); // chargement du header
+        
+         // Création du FormContainer
+         $form_container = new FormContainer();
+
+           // Ajout du fil d'Ariane
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Contact");
+
+        // Ajout du titre principal
+        $form_container->addMainTitle("Nous contacter");
+        $form_container->addDescription("Email : Medic@example.com ");
+        $form_container->addDescription("Téléphone :  +32 04 44 44 44 ");
+        $form_container->addDescription("Adresse : Rue Hazinelle 13  Liège, 4000  Belgique ");
+        
+        // Rendu du contenu
+        echo $form_container->render();
+   
+    }
+
+}
+
+
+
+--- form_container.php
+<?php
+
+class FormContainer {
+    private $elements = [];
+    private $html = '';
+    private $breadcrumbSeparator = ' &gt; '; // Flèche de fil d'Ariane par défaut
+
+    public function setBreadcrumbSeparator($separator) {
+        $this->breadcrumbSeparator = $separator;
+    }
+
+    public function addMainTitle($text) {
+        $this->elements[] = ['maintitle', $text];
+    }
+
+    public function addSubTitle($text) {
+        $this->elements[] = ['subtitle', $text];
+    }
+
+    public function addDescription($text) {
+        $this->elements[] = ['description', $text];
+    }
+
+    public function addBreadcrumb($text, $link = null) {
+        if ($link) {
+            $this->elements[] = ['breadcrumb', [$text, $link]];
+        } else {
+            $this->elements[] = ['breadcrumb', $text];
+        }
+    }
+
+    public function addElement($title, $content) {
+        $this->elements[] = ['element', [$title, $content]];
+    }
+
+    private function addOpeningTag($tag, $class = '') {
+        $this->html .= "<$tag";
+        if (!empty($class)) {
+            $this->html .= " class='$class'";
+        }
+        $this->html .= ">\n";
+    }
+
+    private function addClosingTag($tag) {
+        $this->html .= "</$tag>\n";
+    }
+
+    public function render() {
+        $this->addOpeningTag('div', 'container');
+        $this->addOpeningTag('div', 'row');
+        $this->addOpeningTag('div', 'col');
+        $this->addOpeningTag('main', '', 'main');
+    
+        // Ajouter le fil d'Ariane avant le titre principal
+        $breadcrumb = '';
+        foreach ($this->elements as $element) {
+            $type = $element[0];
+            $content = $element[1];
+    
+            if ($type === 'breadcrumb') {
+                if (is_array($content)) {
+                    $breadcrumb .= "<a href='{$content[1]}'>{$content[0]}</a>{$this->breadcrumbSeparator}";
+                } else {
+                    $breadcrumb .= "$content{$this->breadcrumbSeparator}";
+                }
+            } else {
+                break; // Arrêter dès qu'on rencontre autre chose que le fil d'Ariane
+            }
+        }
+    
+        // Supprimer le dernier séparateur du fil d'Ariane
+        $breadcrumb = rtrim($breadcrumb, $this->breadcrumbSeparator);
+    
+        // Ajouter le fil d'Ariane dans une seule ligne
+        if (!empty($breadcrumb)) {
+            $this->html .= "<div class='breadcrumb'>$breadcrumb</div>\n";
+        }
+    
+        // Ajouter le titre principal après le fil d'Ariane
+        foreach ($this->elements as $element) {
+            $type = $element[0];
+            $content = $element[1];
+    
+            if ($type === 'maintitle') {
+                $this->html .= "<h2>$content</h2>\n";
+                break; // Arrêter dès qu'on rencontre le titre principal
+            }
+        }
+    
+        // Ajouter les sous-titres et autres éléments
+        $subtitleAdded = false;
+        foreach ($this->elements as $element) {
+            $type = $element[0];
+            $content = $element[1];
+    
+            if ($type === 'maintitle' || $type === 'breadcrumb') {
+                continue; // Ne pas répéter le titre principal ni le fil d'Ariane
+            }
+    
+            switch ($type) {
+                case 'subtitle':
+                    if ($subtitleAdded) {
+                        $this->html .= "<hr>"; // Ajout d'une séparation entre les sous-titres
+                    }
+                    $subtitleAdded = true;
+                    $this->html .= "<h3>$content</h3>\n";
+                    break;
+                case 'description':
+                    $this->html .= "<p>$content</p>\n";
+                    break;
+                case 'element':
+                    $title = $content[0];
+                    $content = $content[1];
+                    $this->html .= "<h4>$title</h4>\n<p>$content</p>\n";
+                    break;
+            }
+        }
+    
+        $this->addClosingTag('main');
+        $this->addClosingTag('div');
+        $this->addClosingTag('div');
+        $this->addClosingTag('div');
+    
+        return $this->html;
+    }
+}
+
+
+--- form_view.php
+<?php
+
+class FormView {
+    private $action;
+    private $fields = [];
+    private $buttons = []; // Initialisation de la propriété buttons
+    private $submitLabel;
+
+    public function __construct($action, $submitLabel = 'Soumettre') {
+        $this->action = $action;
+        $this->submitLabel = $submitLabel;
+    }
+
+    public function addField($id, $name, $type, $label, $value = '') {
+        $this->fields[] = [
+            'id' => $id,
+            'name' => $name,
+            'type' => $type,
+            'label' => $label,
+            'value' => $value,
+            'options' => []  // Utilisé uniquement pour les champs de type 'select'
+        ];
+        return $this;
+    }
+
+    public function addSelectField($id, $name, $label, $options, $selectedValue = '') {
+        $this->fields[] = [
+            'id' => $id,
+            'name' => $name,
+            'type' => 'select',
+            'label' => $label,
+            'value' => $selectedValue,
+            'options' => $options
+        ];
+        return $this;
+    }
+
+    public function addButton($type, $label) {
+        $this->buttons[] = [
+            'type' => $type,
+            'label' => $label
+        ];
+        return $this;
+    }
+
+   public function build() {
+       $formHtml = "<form action='{$this->action}' method='post' class='form-container'>";
+
+       foreach ($this->fields as $field) {
+           $formHtml .= "<div class='form-group'>";
+           $formHtml .= "<label for='{$field['id']}'>{$field['label']}</label>";
+
+           if ($field['type'] === 'select') {
+               $formHtml .= "<select class='form-control' id='{$field['id']}' name='{$field['name']}'>";
+               foreach ($field['options'] as $optionValue => $optionLabel) {
+                   $selected = $field['value'] == $optionValue ? 'selected' : '';
+                   $formHtml .= "<option value='{$optionValue}' {$selected}>{$optionLabel}</option>";
+               }
+               $formHtml .= "</select>";
+           } else {
+               $formHtml .= "<input class='form-control' type='{$field['type']}' id='{$field['id']}' name='{$field['name']}' value='{$field['value']}'>";
+           }
+
+           $formHtml .= "</div>";
+       }
+
+       foreach ($this->buttons as $button) {
+           $formHtml .= "<button type='{$button['type']}' class='btn btn-primary'>{$button['label']}</button>";
+       }
+
+       $formHtml .= "</form>";
+       return $formHtml;
+   }
+}
+
+
+--- medecin_view.php
+<?php
+
+require_once 'base_view.php';
+require_once 'admin_view.php';
+require_once 'form_view.php';
+require_once 'form_container.php';
+
+
+class MedecinView {
+
+    public function renderHeader() {
+        include 'templates/header.php';
+    }
+
+    public function renderFooter() {
+        include 'templates/footer.php';
+    }
+
+    public function renderMedecinList($medecins) {
+        $this->renderHeader();
+
+        // Création du FormContainer
+        $form_container = new FormContainer();
+
+        // Ajout du fil d'Ariane
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Nos Médecins");
+
+        // Ajout du titre principal
+        $form_container->addMainTitle("Nos Médecins");
+
+        // Check $medecins not NULL
+        if ($medecins !== null) {
+        // Ajout de chaque médecin dans le FormContainer
+        foreach ($medecins as $medecin) {
+            $form_container->addSubTitle($medecin['nom']);
+            $form_container->addDescription("Email : " . htmlspecialchars($medecin['email']));
+            $form_container->addDescription("Spécialité : " . htmlspecialchars($medecin['specialite']));
+            $form_container->addDescription("Téléphone : " . htmlspecialchars($medecin['telephone']));
+          }
+      } else {
+        // Handle case where $medecins is NULL
+        $form_container->addDescription("Aucun médecin trouvé.");
+    }
+
+        // Rendu du contenu
+        echo $form_container->render();
+    }
+}
+
+
+--- category_view.php
+<?php
+require_once 'base_view.php';
+require_once 'admin_view.php';
+
+class CategoryView extends BaseView {
+    public function displayCategories($categories) {
+        echo "<h1>Catégories</h1>";
+        foreach ($categories as $category) {
+            echo "<div>";
+            echo "<h2>{$category['nom']}</h2>";
+            echo "<p>{$category['description']}</p>";
+            echo "</div>";
+        }
+    }
+
+    public function displaySingleCategory($category) {
+        echo "<h1>{$category['nom']}</h1>";
+        echo "<p>{$category['description']}</p>";
+    }
+
+    public function renderEditCategoryForm($category) {
+        $this->renderHeader();
+
+        // Création d'une nouvelle instance de FormView
+        $form = new FormView("index.php?action=updateCategory&id={$category['id']}");
+
+        // Ajout des champs au formulaire
+        $form->addField('nom', 'nom', 'text', 'Nom:', $category['nom']);
+
+        // Affichage du formulaire
+        echo "<div class='container mt-5'>
+                <div class='row'>
+                    <div class='col-md-6 offset-md-3'>
+                        <div class='card'>
+                            <div class='card-header'>Modifier la categorie</div>
+                            <div class='card-body'>";
+
+        echo $form->build();
+
+        echo "         </div>
+                        </div>
+                    </div>
+                </div>
+              </div>";
+
+              // Ajout de JavaScript pour la validation du formulaire
+      echo "<script>
+              document.querySelector('form').onsubmit = function(event) {
+                  let nom = document.querySelector('[name=\"nom\"]').value;
+
+                  if(nom.trim() === '') {
+                      alert('Veuillez remplir le champ Nom.');
+                      event.preventDefault(); // Empêche la soumission du formulaire
+                  }
+              };
+            </script>";
+
+
+        $this->renderFooter();
+    }
+
+
+    public function showCategories($categories) {
+    $this->renderHeader();
+
+    echo "<div class='container mt-5'>";
+    echo "<h2>Catégories</h2>";
+    echo "<ul class='list-group'>";
+
+    foreach ($categories as $category) {
+        echo "<li class='list-group-item'>";
+        echo "<a href='index.php?action=showArticlesByCategory&id={$category['id']}'>";
+        echo htmlspecialchars($category['nom']);
+        echo "</a>";
+        echo "</li>";
+    }
+
+    echo "</ul>";
+    echo "</div>";
+
+  }
+
+}
+
+
+--- user_view.php
+<?php
+
+require_once 'base_view.php';
+require_once 'form_container.php';
+
+
+class UserView extends BaseView {
+
+    /**
+     * Affichage de la page d'acceuil
+     */
+
+    public function renderHome() {
+        $this->renderHeader();
+
+        // Création du FormContainer
+        $form_container = new FormContainer();
+
+        // Ajout du fil d'Ariane
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Page Intérieure");
+
+        // Ajout du titre principal
+        $form_container->addMainTitle("Accueil");
+
+        // Section de contenu principale
+        $form_container->addDescription("Exemple de modèle de page intérieure");
+
+        // Section Calendrier
+        $form_container->addElement("Calendrier", '<div id="calendar"></div>');
+
+        // Rendu du contenu
+        echo $form_container->render();
+    }
+
+
+    /**
+     * Affiche le formulaire de connexion.
+     */
+     public function displayLoginForm() {
+         $this->renderHeader();
+         $form_container = new FormContainer();
+
+         // Ajout du fil d'Ariane
+         $form_container->addBreadcrumb("Accueil", "index.php");
+         $form_container->addBreadcrumb("Connexion");
+
+         // Ajout du titre principal
+         $form_container->addMainTitle("Connexion");
+
+         // Création du formulaire de connexion
+         $form_container->addDescription("Veuillez vous connecter en utilisant le formulaire ci-dessous.");
+
+         $formHtml = $this->buildLoginForm();
+         $form_container->addElement("Formulaire de Connexion", $formHtml);
+
+         echo $form_container->render();
+         $this->renderFooter();
+     }
+
+     private function buildLoginForm() {
+         $form = new FormView("index.php?action=login");
+         $form->addField('email', 'email', 'email', 'Email:');
+         $form->addField('password', 'password', 'password', 'Mot de passe:');
+         $form->addButton('submit', 'Se connecter');
+         return $form->build();
+     }
+
+
+         public function displayRegistrationForm() {
+             $this->renderHeader();
+             $form_container = new FormContainer();
+
+             $form_container->addBreadcrumb("Accueil", "index.php");
+             $form_container->addBreadcrumb("Inscription");
+
+             $form_container->addMainTitle("Inscription");
+
+             $form_container->addDescription("Veuillez vous inscrire en utilisant le formulaire ci-dessous.");
+
+             $formHtml = $this->buildRegistrationForm();
+             $form_container->addElement("Formulaire d'Inscription", $formHtml);
+
+             echo $form_container->render();
+             $this->renderFooter();
+         }
+
+         private function buildRegistrationForm() {
+             $form = new FormView("index.php?action=register", 'S\'inscrire');
+             $form->addField('nom', 'nom', 'text', 'Nom d\'utilisateur:')
+                  ->addField('email', 'email', 'email', 'Email:')
+                  ->addField('password', 'password', 'password', 'Mot de passe:')
+                  ->addButton('submit', 'S\'inscrire');
+             return $form->build();
+         }
+    /**
+     * Affiche le lien de déconnexion.
+     */
+    public function displayLogoutLink() {
+        echo '<a href="index.php?action=logout">Déconnexion</a>';
+    }
+}
+
+--- secretaire_view.php :
+<?php
+require_once 'base_view.php';
+
+class SecretaireView extends BaseView {
+    /**
+     * Affiche la liste des secrétaires.
+     * @param array $secretaires Liste des secrétaires à afficher.
+     */
+    public function afficherSecretaires($secretaires) {
+        $this->renderHeader();
+        echo "<h1>Liste des Secrétaires</h1>";
+        if (!empty($secretaires)) {
+            echo "<div class='container'>";
+            foreach ($secretaires as $secretaire) {
+                echo "<div class='card mb-3'>";
+                echo "<div class='card-body'>";
+                echo "<h5 class='card-title'>" . htmlspecialchars($secretaire['prenom']) . " " . htmlspecialchars($secretaire['nom']) . "</h5>";
+                echo "<p class='card-text'>Téléphone: " . htmlspecialchars($secretaire['telephone']) . "</p>";
+                echo "<a href='index.php?action=montrerFormulaireModification&id={$secretaire['id']}' class='btn btn-primary'>Modifier</a>";
+                echo " <a href='index.php?action=supprimerSecretaire&id={$secretaire['id']}' class='btn btn-danger'>Supprimer</a>";
+                echo "</div>";
+                echo "</div>";
+            }
+            echo "</div>";
+        } else {
+            echo "<p>Aucun secrétaire trouvé.</p>";
+        }
+        $this->renderFooter();
+    }
+
+    /**
+     * Affiche un formulaire pour ajouter ou modifier un secrétaire.
+     * @param array|null $secretaire Informations du secrétaire pour le formulaire de modification.
+     */
+    public function afficherFormulaireSecretaire($secretaire = null) {
+        $this->renderHeader();
+        $action = isset($secretaire) ? "index.php?action=mettreAJourSecretaire&id={$secretaire['id']}" : "index.php?action=creerSecretaire";
+        $titre = isset($secretaire) ? "Modifier le secrétaire" : "Ajouter un secrétaire";
+        
+        echo "<div class='container'>";
+        echo "<h1>{$titre}</h1>";
+        echo "<form action='{$action}' method='post'>";
+        echo "<div class='mb-3'>";
+        echo "<label for='prenom' class='form-label'>Prénom</label>";
+        echo "<input type='text' class='form-control' id='prenom' name='prenom' value='" . htmlspecialchars($secretaire['prenom'] ?? '') . "' required>";
+        echo "</div>";
+        echo "<div class='mb-3'>";
+        echo "<label for='nom' class='form-label'>Nom</label>";
+        echo "<input type='text' class='form-control' id='nom' name='nom' value='" . htmlspecialchars($secretaire['nom'] ?? '') . "' required>";
+        echo "</div>";
+        echo "<div class='mb-3'>";
+        echo "<label for='telephone' class='form-label'>Téléphone</label>";
+        echo "<input type='text' class='form-control' id='telephone' name='telephone' value='" . htmlspecialchars($secretaire['telephone'] ?? '') . "' required>";
+        echo "</div>";
+        echo "<button type='submit' class='btn btn-primary'>" . (isset($secretaire) ? "Mettre à jour" : "Ajouter") . "</button>";
+        echo "</form>";
+        echo "</div>";
+        $this->renderFooter();
+    }
+}
+?>
