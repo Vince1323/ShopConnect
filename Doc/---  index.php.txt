@@ -1,3 +1,54 @@
+VOICI EN PREMIER LE SCHEMA DU CODE :
+/ShopConnect / 
+│
+├── /public/
+│   ├── script.js
+│   └── styles.css
+│
+├── /app/
+│   │
+│   ├── /base/      
+│   │   └── style.css
+│   │ 
+│   ├── /controllers/
+│   │   ├── AdminController.php
+│   │   ├── BaseController.php
+│   │   ├── ArticleController.php
+│   │   ├── MarketingController.php
+│   │   └── UserController.php
+│   │
+│   ├── /models/
+│   │   ├── BaseModel.php
+│   │   ├── UserModel.php
+│   │   ├── ArticleModel.php
+│   │   ├── ArticleBoutiqueModel.php
+│   │   ├── BoutiqueModel.php
+│   │   ├── ClientModel.php
+│   │   ├── HistoriqueAchatsModel.php
+│   │   ├── MarketingModel.php
+│   │   ├── NoteModel.php
+│   │   ├── AchatModel.php
+│   │   └── FactureModel.php
+│   │
+│   ├── /views/
+│   │   ├── article_view.php
+│   │   ├── base_view.php
+│   │   ├── user_view.php
+│   │   ├── contact_view.php
+│   │   ├── form_container.php
+│   │   ├── form_view.php
+│   │   ├── marketing_view.php
+│   │   ├── admin_view.php
+│   │   └── /templates/
+│   │       ├── header.php
+│   │       ├── footer.php
+│   │       └── container.php
+│   │
+└── index.php
+
+
+--- index.php
+<?php
 <?php
 session_start();
 /*
@@ -9,15 +60,14 @@ echo '</pre>';
 // Inclure les fichiers nécessaires
 require_once 'app/controllers/UserController.php';
 require_once 'app/controllers/AdminController.php';
-require_once 'app/controllers/MedecinController.php';
-require_once 'app/controllers/SecretaireController.php';
-require_once 'app/controllers/SecretaireController.php';
+require_once 'app/controllers/ArticleController.php';
+require_once 'app/controllers/MarketingController.php';
 
 // Créer les instances des contrôleurs nécessaires
 $userController = new UserController();
 $adminController = new AdminController();
-$medecinController = new MedecinController();
-$secretaireController = new SecretaireController();
+$articleController = new ArticleController();
+$marketingController = new MarketingController();
 
 
 // Déterminer l'action à effectuer (utiliser une valeur par défaut si aucune action spécifiée)
@@ -42,18 +92,15 @@ switch ($action) {
        $adminController->dashboardUser();
        break;
 
-   case 'dashboardMedecin':
-       $adminController->dashboardMedecin();
+   case 'dashboardArticle':
+       $adminController->dashboardArticle();
        break;
 
-   case 'dashboardPatient':
-       $adminController->dashboardPatient();
+   case 'dashboardClient':
+       $adminController->dashboardClient();
        break;
 
-   case 'dashboardConges':
-       $adminController->dashboardConges();
-       break;
-
+  
    case 'dashboardFactures':
        $adminController->dashboardFactures();
        break;
@@ -66,40 +113,40 @@ switch ($action) {
        $adminController->dashboardHoraires();
        break;
 
-   case 'dashboardMedecinServices':
-       $adminController->dashboardMedecinServices();
+   case 'dashboardArticleBoutique':
+       $adminController->dashboardArticleBoutique();
        break;
 
    case 'dashboardNotes':
        $adminController->dashboardNotes();
        break;
 
-   case 'dashboardRdv':
-       $adminController->dashboardRdv();
+   case 'dashboardAchats':
+       $adminController->dashboardAchats();
        break;
 
-   case 'dashboardServices':
-       $adminController->dashboardServices();
+   case 'dashboardBoutiques':
+       $adminController->dashboardBoutiques();
        break;
 
-    case 'dashboardSecretaire':
-        $adminController->dashboardSecretaire();
+    case 'dashboardMarketing':
+        $adminController->dashboardMarketing();
         break;
         
 
        /**
-        * Méthodes medecin
+        * Méthodes Article
         */
 
-       case 'homeMedecin':
-           $medecinController->homeMedecin();
+       case 'homeArticle':
+           $articleController->homeArticle();
            break;
-       case 'listMedecins':
-           $medecinController->listMedecins();
+       case 'listArticles':
+           $articleController->listArticles();
            break;
-       case 'viewMedecin':
+       case 'viewArticle':
            $id = $_GET['id'];
-           $medecinController->viewMedecin($id);
+           $articleController->viewArticle($id);
            break;
 
     /**
@@ -134,58 +181,45 @@ switch ($action) {
        $adminController->deleteUser($_POST['id']);
        break;
      /**
-      * Edit, Update, Delete Medecin
+      * Edit, Update, Delete Article
       */
-      case 'editMedecin':
-          $adminController->editMedecin($_GET['id']);
+      case 'editArticle':
+          $adminController->editArticle($_GET['id']);
           break;
-      case 'updateMedecin':
-          $adminController->updateMedecin($_GET['id'], $_POST);
+      case 'updateArticle':
+          $adminController->updateArticle($_GET['id'], $_POST);
           break;
-      case 'deleteMedecin':
-          $adminController->deleteMedecin($_POST['id']);
+      case 'deleteArticle':
+          $adminController->deleteArticle($_POST['id']);
           break;
      /**
-      * Edit, Update, Delete Patient
+      * Edit, Update, Delete Client
       */
-     case 'editPatient':
-       $adminController->editPatient($_GET['id']);
+     case 'editClient':
+       $adminController->editClient($_GET['id']);
        break;
-    case 'updatePatient':
-       $adminController->updatePatient($_GET['id'], $_POST);
+    case 'updateClient':
+       $adminController->updateClient($_GET['id'], $_POST);
        break;
-    case 'deletePatient':
-       $adminController->deletePatient($_GET['id']);
+    case 'deleteClient':
+       $adminController->deleteClient($_GET['id']);
        break;
 
  
   /**
-  * Edit, Update, Delete Secretaire
+  * Edit, Update, Delete Marketing
   */
-  case 'editSecretaire':
-      $adminController->editSecretaire($_GET['id']);
+  case 'editMarketing':
+      $adminController->editMarketing($_GET['id']);
       break;
-  case 'updateSecretaire':
-      $adminController->updateSecretaire($_GET['id'], $_POST);
+  case 'updateMarketing':
+      $adminController->updateMarketing($_GET['id'], $_POST);
       break;
-  case 'deleteSecretaire':
-      $adminController->deleteSecretaire($_POST['id']);
+  case 'deleteMarketing':
+      $adminController->deleteMarketing($_POST['id']);
       break;
 
-      /**
-       * Edit, Update, Delete Conges
-       */
-
-    case 'editConges':
-      $adminController->editConges($_GET['id']);
-      break;
-    case 'updateConges':
-      $adminController->updateConges($_GET['id'], $_POST);
-      break;
-    case 'deleteConges':
-       $adminController->deleteConges($_POST['id']);
-       break;
-
+      
       /**
        * Edit, Update, Delete Factures
        */
@@ -229,17 +263,17 @@ switch ($action) {
        break;
 
       /**
-       * Edit, Update, Delete MedecinService
+       * Edit, Update, Delete ArticleBoutique
        */
 
-       case 'editMedecinServices':
-           $adminController->editMedecinServices($_GET['medecin_id'], $_GET['service_id']);
+       case 'editArticleBoutique':
+           $adminController->editArticleBoutique($_GET['article_id'], $_GET['boutique_id']);
            break;
-       case 'updateMedecinServices':
-           $adminController->updateMedecinServices($_GET['medecin_id'], $_GET['service_id'], $_POST);
+       case 'updateArticleBoutique':
+           $adminController->updateArticleBoutique($_GET['article_id'], $_GET['boutique_id'], $_POST);
            break;
-       case 'deleteMedecinServices':
-           $adminController->deleteMedecinServices();
+       case 'deleteArticleBoutique':
+           $adminController->deleteArticleBoutique();
            break;
 
       /**
@@ -257,39 +291,39 @@ switch ($action) {
        break;
 
       /**
-       * Edit, Update, Delete Rdv
+       * Edit, Update, Delete Achat
        */
 
-    case 'editRdv':
-      $adminController->editRdv($_GET['id']);
+    case 'editAchat':
+      $adminController->editAchat($_GET['id']);
       break;
-    case 'updateRdv':
-      $adminController->updateRdv($_GET['id'], $_POST);
+    case 'updateAchat':
+      $adminController->updateAchat($_GET['id'], $_POST);
       break;
-    case 'deleteRdv':
-       $adminController->deleteRdv($_POST['id']);
+    case 'deleteAchat':
+       $adminController->deleteAchat($_POST['id']);
        break;
 
       /**
-       * Edit, Update, Delete Services
+       * Edit, Update, Delete Boutiques
        */
 
-    case 'editServices':
-      $adminController->editServices($_GET['id']);
+    case 'editBoutiques':
+      $adminController->editBoutiques($_GET['id']);
       break;
-    case 'updateServices':
-      $adminController->updateServices($_GET['id'], $_POST);
+    case 'updateBoutiques':
+      $adminController->updateBoutiques($_GET['id'], $_POST);
       break;
-    case 'deleteServices':
-       $adminController->deleteServices($_POST['id']);
+    case 'deleteBoutiques':
+       $adminController->deleteBoutiques($_POST['id']);
        break;
 
   case 'logout':
        $userController->logout();
        break;
 
-  case 'homeMedecin':
-  $medecinController->homeMedecin();
+  case 'homeArticle':
+  $articleController->homeArticle();
   break;
 
   // Afficher le contact

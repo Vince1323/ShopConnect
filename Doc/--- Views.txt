@@ -1,161 +1,273 @@
 --- header.php
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?php echo isset($title) ? htmlspecialchars($title) : 'Medilab'; ?></title>
-  <meta name="description" content="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>">
-  <meta name="keywords" content="<?php echo isset($keywords) ? htmlspecialchars($keywords) : ''; ?>">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo isset($title) ? htmlspecialchars($title) : '🛒 ShopConnect'; ?></title>
+    <meta name="description" content="<?php echo isset($description) ? htmlspecialchars($description) : ''; ?>">
+    <meta name="keywords" content="<?php echo isset($keywords) ? htmlspecialchars($keywords) : ''; ?>">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Fichiers CSS des bibliothèques via CDN -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/2.5.0/remixicon.css" rel="stylesheet">
-  <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <!-- Fichiers CSS des bibliothèques via CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/2.5.0/remixicon.css" rel="stylesheet">
+    <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-  <!-- FullCalendar CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5/main.min.css" rel="stylesheet">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js"></script>
 
-  <!-- Votre propre CSS depuis le dossier local -->
-  <link href="app/views/templates/css/style.css" rel="stylesheet">
+    <!-- Votre propre CSS -->
+    <link href="app/views/templates/css/style.css" rel="stylesheet">
 
+    <!-- jQuery (necessary for FullCalendar's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
 
-  <!-- jQuery (necessary for FullCalendar's JavaScript plugins) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <!-- Fichiers JS des bibliothèques via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
 
-  <!-- Fichiers JS des bibliothèques via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" defer></script>
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+    <style>
+        /* Light Theme */
+        :root.light {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --link-color: #007bff;
+            --header-bg-color: #f8f9fa;
+            --header-text-color: #343a40;
+        }
+
+        /* Dark Theme */
+        :root.dark {
+            --bg-color: #1f1f1f;
+            --text-color: #f0f0f0;
+            --link-color: #ffcc00;
+            --header-bg-color: #343a40;
+            --header-text-color: #f0f0f0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a {
+            color: var(--link-color);
+        }
+
+        a:hover {
+            color: var(--link-color);
+            text-decoration: underline;
+        }
+
+        #header, #topbar {
+            background-color: var(--header-bg-color);
+            color: var(--header-text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-warning {
+            background-color: var(--link-color);
+            color: var(--bg-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #ffdd33;
+            color: var(--text-color);
+        }
+    </style>
+
+    <script>
+        function toggleTheme() {
+            // Toggle between dark and light mode
+            document.documentElement.classList.toggle('dark');
+            const themeIcon = document.getElementById("theme-icon");
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.classList.replace('bi-moon-stars', 'bi-sun');
+            } else {
+                themeIcon.classList.replace('bi-sun', 'bi-moon-stars');
+            }
+        }
+
+        function changeLanguage(language) {
+            if (language === 'fr') {
+                document.documentElement.lang = 'fr';
+                // Change text to French
+                document.getElementById('home-link').innerText = 'Accueil';
+                document.getElementById('services-link').innerText = 'Services';
+                document.getElementById('contact-link').innerText = 'Contact';
+            } else if (language === 'en') {
+                document.documentElement.lang = 'en';
+                // Change text to English
+                document.getElementById('home-link').innerText = 'Home';
+                document.getElementById('services-link').innerText = 'Services';
+                document.getElementById('contact-link').innerText = 'Contact';
+            }
+        }
+    </script>
 </head>
-<body>
-  <!-- ======= Barre du Haut ======= -->
-  <div id="topbar" class="d-flex align-items-center fixed-top">
-    <div class="container d-flex justify-content-between">
-      <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
-        <i class="bi bi-phone"></i> +32 04 04 04 04
-      </div>
-      <div class="d-none d-lg-flex social-links align-items-center">
-        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-    </div>
-  </div>
 
-  <!-- ======= En-tête ======= -->
-  <header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
-      <h1 class="logo me-auto"><a href="index.php">Medilab</a></h1>
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="nav-link scrollto active" href="index.php">Accueil</a></li>
-          <li><a class="nav-link scrollto" href="index.php?action=register">Register Tempo</a></li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link scrollto" href="index.php?action=homeMedecin">Médecins</a></li>
-          <?php if (isset($_SESSION['user_id'])): ?>
-          <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
-          <li class="dropdown">
-            <a href="index.php?action=adminDashboard" class="btn btn-warning"><span>Tableau de bord</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Option 1</a></li>
-              <li class="dropdown">
-                <a href="#"><span>Option 2</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#">Option 2.1</a></li>
-                  <li><a href="#">Option 2.2</a></li>
-                  <li><a href="#">Option 2.3</a></li>
-                  <li><a href="#">Option 2.4</a></li>
-                  <li><a href="#">Option 2.5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Option 3</a></li>
-              <li><a href="#">Option 4</a></li>
-            </ul>
-          </li>
-        <?php endif; ?>
-        <?php endif; ?>
-          <li><a class="nav-link scrollto" href="index.php?action=contact">Contact</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
-      <?php if (isset($_SESSION['user_id'])): ?>
-        <a href="index.php?action=logout" class="appointment-btn scrollto">
-          <span class="d-none d-md-inline">Déconnexion</span>
-        </a>
-      <?php else: ?>
-        <a href="index.php?action=login" class="appointment-btn scrollto">
-            <span class="d-none d-md-inline">Se connecter</span>
-        </a>
-      <?php endif; ?>
+<body class="light">
+    <!-- ======= Barre du Haut ======= -->
+    <div id="topbar" class="d-flex align-items-center fixed-top">
+        <div class="container d-flex justify-content-between">
+            <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+                <i class="bi bi-phone"></i> +32 04 04 04 04
+            </div>
+            <div class="d-none d-lg-flex align-items-center">
+                <!-- Language Switch -->
+                <select onchange="changeLanguage(this.value)" style="margin-right: 15px;">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+
+                <!-- Theme Switch -->
+                <button onclick="toggleTheme()" style="background: none; border: none; cursor: pointer;">
+                    <i id="theme-icon" class="bi bi-moon-stars" style="font-size: 20px;"></i>
+                </button>
+            </div>
+        </div>
     </div>
-  </header><!-- Fin En-tête -->
-  <div class="container mt-5">
+
+    <!-- ======= En-tête ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto"><a href="index.php">ShopConnect</a></h1>
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+                    <li><a id="home-link" class="nav-link scrollto active" href="index.php">Accueil</a></li>
+                    <li><a class="nav-link scrollto" href="index.php?action=register">Register Tempo</a></li>
+                    <li><a id="services-link" class="nav-link scrollto" href="#boutiques">Boutiques</a></li>
+                    <li><a class="nav-link scrollto" href="index.php?action=homeArticle">Articles</a></li>
+                    <?php if (isset($_SESSION['user_id'])) : ?>
+                    <li class="dropdown">
+                        <a href="#" class="btn btn-warning"><span>Tableau de bord</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <?php if ($_SESSION['role'] === 'Admin') : ?>
+                            <li class="dropdown">
+                                <a href="index.php?action=adminDashboard"><span>Gestion admin</span> <i class="bi bi-chevron-right"></i></a>
+                                <ul>
+                                    <li><a href="index.php?action=dashboardUser">Utilisateur</a></li>
+                                    <li><a href="index.php?action=dashboardArticle">Article</a></li>
+                                    <li><a href="index.php?action=dashboardClient">Client</a></li>
+                                    <li><a href="index.php?action=dashboardMarketing">Marketing</a></li>
+                                    <li><a href="index.php?action=dashboardFactures">Factures</a></li>
+                                    <li><a href="index.php?action=dashboardHistorique">Historique Achat</a></li>
+                                    <li><a href="index.php?action=dashboardArticleBoutique">Article Boutique</a></li>
+                                    <li><a href="index.php?action=dashboardNotes">Notes</a></li>
+                                    <li><a href="index.php?action=dashboardAchats">Achats</a></li>
+                                    <li><a href="index.php?action=dashboardBoutiques">Boutiques</a></li>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+                            <?php if ($_SESSION['role'] === 'boutique') : ?>
+                            <li class="dropdown">
+                                <a href="#"><span>Gestion Article</span> <i class="bi bi-chevron-right"></i></a>
+                                <ul>
+                                    <li><a href="index.php?action=viewAchatHistory">Historique des achats</a></li>
+                                    <li><a href="index.php?action=listClients">Liste des clients</a></li>
+                                    <li><a href="index.php?action=viewConfirmedAchats">Mes Achats</a></li>
+                                </ul>
+                            </li>
+                            <?php endif; ?>
+                            <?php if ($_SESSION['role'] === 'Marketing') : ?>
+                            <li class="dropdown">
+                            <li><a href="index.php?action=listeClients">Liste des clients</a></li>
+                            <li><a href="index.php?action=montrerFormulaireAchat">Passer Achat</a></li>
+                            <li class="dropdown">
+                                <a href="#"><span>Achats client</span> <i class="bi bi-chevron-right"></i></a>
+                                <ul>
+                                    <li><a href="index.php?action=viewAllAchat">Tous les Achats</a></li>
+                                    <li><a href="index.php?action=viewConfirmedAchat">Achats Confirmés</a></li>
+                                    <li><a href="index.php?action=viewPendingAchat">Achats en Attente</a></li>
+                                    <li><a href="index.php?action=viewCancelledAchat">Achats Annulés</a></li>
+                                </ul>
+                            </li>
+                           
+                    </li>
+                    <?php endif; ?>
+                </ul>
+                </li>
+                <?php endif; ?>
+                <li><a id="contact-link" class="nav-link scrollto" href="index.php?action=contact">Contact</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+            <?php if (isset($_SESSION['user_id'])) : ?>
+            <a href="index.php?action=logout" class="appointment-btn scrollto"><span class="d-none d-md-inline">Déconnexion</span></a>
+            <?php else : ?>
+            <a href="index.php?action=login" class="appointment-btn scrollto"><span class="d-none d-md-inline">Se connecter</span></a>
+            <?php endif; ?>
+        </div>
+    </header><!-- Fin En-tête -->
+
+    <div class="container mt-5">
+        
 
 --- footer.php
 <!-- ======= Pied de page ======= -->
- <footer id="footer">
+<footer id="footer">
+   <div class="footer-top">
+     <div class="container">
+       <div class="row">
 
-<div class="footer-top">
-  <div class="container">
-    <div class="row">
+         <div class="col-lg-3 col-md-6 footer-contact">
+           <h3><i class="fas fa-store"></i> ShopConnect</h3>
+           <p>
+             <i class="fas fa-map-marker-alt"></i> Rue Hazinelle 13 <br>
+             Liège, 4000, Belgique <br><br>
+             <i class="fas fa-phone"></i> +32 04 44 44 44<br>
+             <i class="fas fa-envelope"></i> <a href="mailto:Medic@example.com">Medic@example.com</a>
+           </p>
+         </div>
 
-      <div class="col-lg-3 col-md-6 footer-contact">
-        <h3>Medilab</h3>
-        <p>
-          Rue Hazinelle 13 <br>
-          Liège, 4000<br>
-          Belgique <br><br>
-          <strong>Téléphone:</strong> +32 04 44 44 44<br>
-          <strong>Email:</strong> Medic@example.com<br>
-        </p>
-      </div>
+         <div class="col-lg-2 col-md-6 footer-links">
+           <h4>Liens Utiles</h4>
+           <ul>
+             <li><i class="bx bx-chevron-right"></i> <a href="index.php">Accueil</a></li>
+             <li><i class="bx bx-chevron-right"></i> <a href="#">À propos de nous</a></li>
+             <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+           </ul>
+         </div>
 
-      <div class="col-lg-2 col-md-6 footer-links">
-        <h4>Liens Utiles</h4>
-        <ul>
-          <li><i class="bx bx-chevron-right"></i> <a href="index.php">Accueil</a></li>
-          <li><i class="bx bx-chevron-right"></i> <a href="#">À propos de nous</a></li>
-          <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-        </ul>
-      </div>
+         <div class="col-lg-3 col-md-6 footer-links">
+           <h4>Nos Services</h4>
+           <ul>
+             <li><i class="bx bx-chevron-right"></i> <a href="#">Medecin</a></li>
+           </ul>
+         </div>
+       </div>
+     </div>
+   </div>
 
-      <div class="col-lg-3 col-md-6 footer-links">
-        <h4>Nos Services</h4>
-        <ul>
-          <li><i class="bx bx-chevron-right"></i> <a href="#">Medecin</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container d-md-flex py-4">
-
-  <div class="me-md-auto text-center text-md-start">
-    <div class="copyright">
-      &copy; Droits d'auteur <strong><span>Medilab</span></strong>. Tous droits réservés
-    </div>
-  </div>
-  <div class="social-links text-center text-md-right pt-3 pt-md-0">
-    <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-    <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-    <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-    <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-    <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-  </div>
-</div>
-</footer><!-- Fin Pied de page -->
+   <div class="container d-md-flex py-4">
+     <div class="me-md-auto text-center text-md-start">
+       <div class="copyright">
+         &copy; Droits d'auteur <strong><span>ShopConnect</span></strong>. Tous droits réservés
+       </div>
+     </div>
+     <div class="social-links text-center text-md-right pt-3 pt-md-0">
+       <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+       <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+       <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+       <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+       <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+     </div>
+   </div>
+ </footer>
+<!-- Fin Pied de page -->
 
  <!-- FullCalendar JS and dependencies -->
  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/umd/popper.min.js"></script>
@@ -166,6 +278,9 @@
     <script src="app/views/templates/js/script.js"></script>
 
 </body>
+
+
+
 
 
 --- container.php
@@ -199,270 +314,34 @@
 
   </main>
 
---- admin_view.php
-
-<?php
-require_once 'form_view.php';
-
-class AdminView {
-
-    public function renderHeader() {
-       include 'templates/header.php';
-    }
-
-    public function renderFooter() {
-        include 'templates/footer.php';
-    }
-        /**
-         * Affiche un tableau à partir d'un titre, d'un tableau de données et de noms de colonnes personnalisés.
-         */
-        private function renderTable($title, $data, $rowCallback, $columns) {
-            echo "<h2>{$title}</h2>";
-            echo "<table class='table' id='dataTable'>"; // Ajout de l'ID 'dataTable'.
-            echo "<thead><tr>";
-
-            // Affichage des en-têtes de colonne personnalisés
-            foreach ($columns as $column) {
-                echo "<th>{$column}</th>";
-            }
-
-            echo "</tr></thead>";
-            echo "<tbody>";
-
-            foreach ($data as $item) {
-                $row = $rowCallback($item);
-                echo "<tr>";
-                foreach ($row as $cell) {
-                    echo "<td>{$cell}</td>";
-                }
-                echo "</tr>";
-            }
-
-            echo "</tbody>";
-            echo "</table>";
-        }
-
-        /**
-         * Ajoute le script DataTables.
-         */
-        private function renderDataTableScript() {
-            echo <<<HTML
-            <script>
-            $(document).ready(function() {
-                $('#dataTable').DataTable({
-                    "paging": true,
-                    "pageLength": 10
-                });
-            });
-            </script>
-            HTML;
-        }
-
-
-        /**
-         * Affiche le tableau de bord de l'administrateur.
-         *
-         * @param array $users Liste des utilisateurs.
-         */
-        public function adminDashboard($users) {
-            $this->renderHeader();
-
-            echo <<<HTML
-    <div class="container">
-        <ul class="nav nav-tabs" id="myTabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#users">Utilisateurs</a>
-            </li>
-        </ul>
-
-        <div class="tab-content">
-            <div class="tab-pane fade show active" id="users">
-    HTML;
-
-    // Utilisateurs
-    $userColumns = ['Nom', 'Email', 'Rôle', 'Actions'];
-    $this->renderTable("Liste des utilisateurs", $users, function($user) {
-        return [
-            htmlspecialchars($user['nom']),
-            htmlspecialchars($user['email']),
-            htmlspecialchars($user['role']),
-            "<a href='index.php?action=editUser&id={$user['id']}' class='btn btn-primary'>Modifier</a>
-            <form method='post' action='index.php?action=deleteUser' style='display: inline;'>
-            <input type='hidden' name='id' value='{$user['id']}'>
-            <button class='btn btn-danger' type='submit'>Supprimer</button>
-            </form>"
-        ];
-    }, $userColumns);
-
-    echo <<<HTML
-    </div>
-</div> <!-- Fin de la tab-content -->
-</div> <!-- Fin du container -->
-HTML;
-
-    $this->renderDataTableScript();
-}
-
-public function renderEditUserForm($user) {
-    $this->renderHeader();
-
-    // Création d'une nouvelle instance de FormView
-    $form = new FormView("index.php?action=updateUser&id={$user['id']}");
-
-    // Ajout des champs au formulaire
-    $form->addField('nom', 'nom', 'text', 'Nom:', $user['nom']);
-    $form->addField('email', 'email', 'text', 'Email:', $user['email']);
-    $form->addSelectField('role', 'role', 'Rôle:', [
-        'Admin' => 'Admin',
-        'Medecin' => 'Medecin',
-        'Secretaire' => 'Secretaire'
-    ], $user['role']);
-
-    // Affichage du formulaire
-    echo "<div class='container mt-5'>
-            <div class='row'>
-                <div class='col-md-6 offset-md-3'>
-                    <div class='card'>
-                        <div class='card-header'>Modifier l'utilisateur</div>
-                        <div class='card-body'>";
-
-    echo $form->build();
-
-    echo "         </div>
-                    </div>
-                </div>
-            </div>
-          </div>";
-          // Ajout de JavaScript pour la validation du formulaire
-          echo "<script>
-                document.querySelector('form').onsubmit = function(event) {
-                    let nom = document.querySelector('[name=\"nom\"]').value;
-                    let email = document.querySelector('[name=\"email\"]').value;
-
-                    if(nom === '' || email === '') {
-                        alert('Veuillez remplir tous les champs.');
-                        event.preventDefault(); // Empêche la soumission du formulaire
-                    }
-                };
-                </script>";
-
-          $this->renderFooter();
-      }
-
-      private function isSelected($currentRole, $roleOption) {
-          return $currentRole == $roleOption ? "selected" : "";
-      }
-  }
-
-?>
-
---- article_view.php
-<?php
-require_once 'base_view.php';
-require_once 'admin_view.php';
-require_once 'form_view.php';
-
-class ArticleView extends BaseView {
-
-    public function displayArticles($articles) {
-        echo "<h1>Articles</h1>";
-        foreach ($articles as $article) {
-            echo "<div>";
-            echo "<h2>{$article['titre']}</h2>";
-            echo "<p>{$article['contenu']}</p>";
-            echo "</div>";
-        }
-    }
-
-    public function displaySingleArticle($article) {
-        echo "<h1>{$article['titre']}</h1>";
-        echo "<p>{$article['contenu']}</p>";
-    }
-
-    public function renderEditArticleForm($article) {
-        $this->renderHeader();
-
-        // Création d'une nouvelle instance de FormView
-        $form = new FormView("index.php?action=updateArticle&id={$article['id']}");
-
-        // Ajout des champs au formulaire
-        $form->addField('titre', 'titre', 'text', 'Titre:', $article['titre'])
-             ->addField('contenu', 'contenu', 'text', 'Contenu:', $article['contenu'])
-             ->addField('categorie_id', 'categorie_id', 'number', 'Categorie:', $article['categorie_id']);
-
-        // Affichage du formulaire
-        echo "<div class='container mt-5'>
-                <div class='row'>
-                    <div class='col-md-6 offset-md-3'>
-                        <div class='card'>
-                            <div class='card-header'>Modifier l'article</div>
-                            <div class='card-body'>";
-
-        echo $form->build();
-
-        echo "         </div>
-                        </div>
-                    </div>
-                </div>
-              </div>";
-
-              // Ajout de JavaScript pour la validation du formulaire
-       echo "<script>
-               document.querySelector('form').onsubmit = function(event) {
-                   let titre = document.querySelector('[name=\"titre\"]').value;
-                   let contenu = document.querySelector('[name=\"contenu\"]').value;
-                   let categorie_id = document.querySelector('[name=\"categorie_id\"]').value;
-
-                   if(titre === '' || contenu === '' || categorie_id === '') {
-                       alert('Veuillez remplir tous les champs.');
-                       event.preventDefault(); // Empêche la soumission du formulaire
-                   }
-               };
-             </script>";
-
-        $this->renderFooter();
-    }
-
-    public function showArticles($articles) {
-
-    include 'templates/header.php';
-
-    echo "<h1>Articles</h1>";
-    foreach ($articles as $article) {
-        echo "<div>";
-        echo "<h2>" . htmlspecialchars($article['titre']) . "</h2>";
-        echo "<p>" . htmlspecialchars($article['contenu']) . "</p>";
-
-        echo "</div>";
-    }
-
-  }
-
-}
 
 
 --- base_view.php
 <?php
-class BaseView {
-    public function loadTemplate($templateName, $data = []) {
+class BaseView
+{
+    public function loadTemplate($templateName, $data = [])
+    {
         // Transforme les clés du tableau $data en variables
         extract($data);
 
         require_once "templates/$templateName.php";
     }
 
-    public function renderHeader() {
-       include 'templates/header.php';
+    public function renderHeader()
+    {
+        include 'templates/header.php';
     }
-    
-    public function renderContainer() {
-        include 'templates/container.php';
-     }
 
-    public function renderFooter() {
+    public function renderContainer()
+    {
+        include 'templates/container.php';
+    }
+
+    public function renderFooter()
+    {
         include 'templates/footer.php';
     }
-
 }
 
 --- contact_view.php
@@ -715,7 +594,7 @@ class FormView {
 }
 
 
---- medecin_view.php
+--- article_view.php
 <?php
 
 require_once 'base_view.php';
@@ -724,7 +603,7 @@ require_once 'form_view.php';
 require_once 'form_container.php';
 
 
-class MedecinView {
+class ArticleView {
 
     public function renderHeader() {
         include 'templates/header.php';
@@ -734,7 +613,7 @@ class MedecinView {
         include 'templates/footer.php';
     }
 
-    public function renderMedecinList($medecins) {
+    public function renderArticleList($articles) {
         $this->renderHeader();
 
         // Création du FormContainer
@@ -742,114 +621,27 @@ class MedecinView {
 
         // Ajout du fil d'Ariane
         $form_container->addBreadcrumb("Accueil", "index.php");
-        $form_container->addBreadcrumb("Nos Médecins");
+        $form_container->addBreadcrumb("Nos Articles");
 
         // Ajout du titre principal
-        $form_container->addMainTitle("Nos Médecins");
+        $form_container->addMainTitle("Nos Articles");
 
-        // Check $medecins not NULL
-        if ($medecins !== null) {
+        // Check $articles not NULL
+        if ($articles !== null) {
         // Ajout de chaque médecin dans le FormContainer
-        foreach ($medecins as $medecin) {
-            $form_container->addSubTitle($medecin['nom']);
-            $form_container->addDescription("Email : " . htmlspecialchars($medecin['email']));
-            $form_container->addDescription("Spécialité : " . htmlspecialchars($medecin['specialite']));
-            $form_container->addDescription("Téléphone : " . htmlspecialchars($medecin['telephone']));
+        foreach ($articles as $article) {
+          $form_container->addSubTitle("Docteur " . htmlspecialchars($article['nom']));
+            $form_container->addDescription("Spécialité : " . htmlspecialchars($article['specialite']));
+            $form_container->addDescription("Téléphone : " . htmlspecialchars($article['telephone']));
           }
       } else {
-        // Handle case where $medecins is NULL
-        $form_container->addDescription("Aucun médecin trouvé.");
+        // Handle case where $articles is NULL
+        $form_container->addDescription("Aucun article trouvé.");
     }
 
         // Rendu du contenu
         echo $form_container->render();
     }
-}
-
-
---- category_view.php
-<?php
-require_once 'base_view.php';
-require_once 'admin_view.php';
-
-class CategoryView extends BaseView {
-    public function displayCategories($categories) {
-        echo "<h1>Catégories</h1>";
-        foreach ($categories as $category) {
-            echo "<div>";
-            echo "<h2>{$category['nom']}</h2>";
-            echo "<p>{$category['description']}</p>";
-            echo "</div>";
-        }
-    }
-
-    public function displaySingleCategory($category) {
-        echo "<h1>{$category['nom']}</h1>";
-        echo "<p>{$category['description']}</p>";
-    }
-
-    public function renderEditCategoryForm($category) {
-        $this->renderHeader();
-
-        // Création d'une nouvelle instance de FormView
-        $form = new FormView("index.php?action=updateCategory&id={$category['id']}");
-
-        // Ajout des champs au formulaire
-        $form->addField('nom', 'nom', 'text', 'Nom:', $category['nom']);
-
-        // Affichage du formulaire
-        echo "<div class='container mt-5'>
-                <div class='row'>
-                    <div class='col-md-6 offset-md-3'>
-                        <div class='card'>
-                            <div class='card-header'>Modifier la categorie</div>
-                            <div class='card-body'>";
-
-        echo $form->build();
-
-        echo "         </div>
-                        </div>
-                    </div>
-                </div>
-              </div>";
-
-              // Ajout de JavaScript pour la validation du formulaire
-      echo "<script>
-              document.querySelector('form').onsubmit = function(event) {
-                  let nom = document.querySelector('[name=\"nom\"]').value;
-
-                  if(nom.trim() === '') {
-                      alert('Veuillez remplir le champ Nom.');
-                      event.preventDefault(); // Empêche la soumission du formulaire
-                  }
-              };
-            </script>";
-
-
-        $this->renderFooter();
-    }
-
-
-    public function showCategories($categories) {
-    $this->renderHeader();
-
-    echo "<div class='container mt-5'>";
-    echo "<h2>Catégories</h2>";
-    echo "<ul class='list-group'>";
-
-    foreach ($categories as $category) {
-        echo "<li class='list-group-item'>";
-        echo "<a href='index.php?action=showArticlesByCategory&id={$category['id']}'>";
-        echo htmlspecialchars($category['nom']);
-        echo "</a>";
-        echo "</li>";
-    }
-
-    echo "</ul>";
-    echo "</div>";
-
-  }
-
 }
 
 
@@ -860,13 +652,15 @@ require_once 'base_view.php';
 require_once 'form_container.php';
 
 
-class UserView extends BaseView {
+class UserView extends BaseView
+{
 
     /**
      * Affichage de la page d'acceuil
      */
 
-    public function renderHome() {
+    public function renderHome()
+    {
         $this->renderHeader();
 
         // Création du FormContainer
@@ -893,129 +687,772 @@ class UserView extends BaseView {
     /**
      * Affiche le formulaire de connexion.
      */
-     public function displayLoginForm() {
-         $this->renderHeader();
-         $form_container = new FormContainer();
+    public function displayLoginForm()
+    {
+        $this->renderHeader();
+        $form_container = new FormContainer();
 
-         // Ajout du fil d'Ariane
-         $form_container->addBreadcrumb("Accueil", "index.php");
-         $form_container->addBreadcrumb("Connexion");
+        // Ajout du fil d'Ariane
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Connexion");
 
-         // Ajout du titre principal
-         $form_container->addMainTitle("Connexion");
+        // Ajout du titre principal
+        $form_container->addMainTitle("Connexion");
 
-         // Création du formulaire de connexion
-         $form_container->addDescription("Veuillez vous connecter en utilisant le formulaire ci-dessous.");
+        // Création du formulaire de connexion
+        $form_container->addDescription("Veuillez vous connecter en utilisant le formulaire ci-dessous.");
 
-         $formHtml = $this->buildLoginForm();
-         $form_container->addElement("Formulaire de Connexion", $formHtml);
+        $formHtml = $this->buildLoginForm();
+        $form_container->addElement("Formulaire de Connexion", $formHtml);
 
-         echo $form_container->render();
-         $this->renderFooter();
-     }
+        echo $form_container->render();
+        $this->renderFooter();
+    }
 
-     private function buildLoginForm() {
-         $form = new FormView("index.php?action=login");
-         $form->addField('email', 'email', 'email', 'Email:');
-         $form->addField('password', 'password', 'password', 'Mot de passe:');
-         $form->addButton('submit', 'Se connecter');
-         return $form->build();
-     }
+    private function buildLoginForm()
+    {
+        $form = new FormView("index.php?action=login");
+        $form->addField('email', 'email', 'email', 'Email:');
+        $form->addField('password', 'password', 'password', 'Mot de passe:');
+        $form->addButton('submit', 'Se connecter');
+        return $form->build();
+    }
 
 
-         public function displayRegistrationForm() {
-             $this->renderHeader();
-             $form_container = new FormContainer();
+    public function displayRegistrationForm()
+    {
+        $this->renderHeader();
+        $form_container = new FormContainer();
 
-             $form_container->addBreadcrumb("Accueil", "index.php");
-             $form_container->addBreadcrumb("Inscription");
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Inscription");
 
-             $form_container->addMainTitle("Inscription");
+        $form_container->addMainTitle("Inscription");
 
-             $form_container->addDescription("Veuillez vous inscrire en utilisant le formulaire ci-dessous.");
+        $form_container->addDescription("Veuillez vous inscrire en utilisant le formulaire ci-dessous.");
 
-             $formHtml = $this->buildRegistrationForm();
-             $form_container->addElement("Formulaire d'Inscription", $formHtml);
+        $formHtml = $this->buildRegistrationForm();
+        $form_container->addElement("Formulaire d'Inscription", $formHtml);
 
-             echo $form_container->render();
-             $this->renderFooter();
-         }
+        echo $form_container->render();
+        $this->renderFooter();
+    }
 
-         private function buildRegistrationForm() {
-             $form = new FormView("index.php?action=register", 'S\'inscrire');
-             $form->addField('nom', 'nom', 'text', 'Nom d\'utilisateur:')
-                  ->addField('email', 'email', 'email', 'Email:')
-                  ->addField('password', 'password', 'password', 'Mot de passe:')
-                  ->addButton('submit', 'S\'inscrire');
-             return $form->build();
-         }
+    private function buildRegistrationForm()
+    {
+        $form = new FormView("index.php?action=register", 'S\'inscrire');
+        $form->addField('nom', 'nom', 'text', 'Nom d\'utilisateur:')
+            ->addField('email', 'email', 'email', 'Email:')
+            ->addField('password', 'password', 'password', 'Mot de passe:')
+            ->addButton('submit', 'S\'inscrire');
+        return $form->build();
+    }
+
+    public function displayProfile($user)
+    {
+        $this->renderHeader();
+
+        $form_container = new FormContainer();
+
+        // Ajout du fil d'Ariane
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Profil utilisateur");
+
+        // Ajout du titre principal
+        $form_container->addMainTitle("Profil de l'utilisateur");
+
+        // Affichage des informations de l'utilisateur
+        $form_container->addDescription("Voici les informations du profil utilisateur :");
+
+        $profileHtml = "<ul>";
+        $profileHtml .= "<li>ID : " . htmlspecialchars($user['id']) . "</li>";
+        $profileHtml .= "<li>Nom : " . htmlspecialchars($user['nom']) . "</li>";
+        $profileHtml .= "<li>Email : " . htmlspecialchars($user['email']) . "</li>";
+        $profileHtml .= "<li>Rôle : " . htmlspecialchars($user['role']) . "</li>";
+        $profileHtml .= "</ul>";
+
+        // Ajoute le HTML du profil à la page
+        $form_container->addElement("Informations du Profil", $profileHtml);
+
+        echo $form_container->render();
+        $this->renderFooter();
+    }
+
     /**
      * Affiche le lien de déconnexion.
      */
-    public function displayLogoutLink() {
+    public function displayLogoutLink()
+    {
         echo '<a href="index.php?action=logout">Déconnexion</a>';
     }
 }
 
---- secretaire_view.php :
+--- markteting_view.php :
 <?php
-require_once 'base_view.php';
 
-class SecretaireView extends BaseView {
-    /**
-     * Affiche la liste des secrétaires.
-     * @param array $secretaires Liste des secrétaires à afficher.
-     */
-    public function afficherSecretaires($secretaires) {
+require_once 'base_view.php';
+require_once 'admin_view.php';
+require_once 'form_view.php';
+require_once 'form_container.php';
+
+
+class MarketingView {
+
+    public function renderHeader() {
+        include 'templates/header.php';
+    }
+
+    public function renderFooter() {
+        include 'templates/footer.php';
+    }
+
+    public function renderMarketingList($marketings) {
         $this->renderHeader();
-        echo "<h1>Liste des Secrétaires</h1>";
-        if (!empty($secretaires)) {
-            echo "<div class='container'>";
-            foreach ($secretaires as $secretaire) {
-                echo "<div class='card mb-3'>";
-                echo "<div class='card-body'>";
-                echo "<h5 class='card-title'>" . htmlspecialchars($secretaire['prenom']) . " " . htmlspecialchars($secretaire['nom']) . "</h5>";
-                echo "<p class='card-text'>Téléphone: " . htmlspecialchars($secretaire['telephone']) . "</p>";
-                echo "<a href='index.php?action=montrerFormulaireModification&id={$secretaire['id']}' class='btn btn-primary'>Modifier</a>";
-                echo " <a href='index.php?action=supprimerSecretaire&id={$secretaire['id']}' class='btn btn-danger'>Supprimer</a>";
-                echo "</div>";
-                echo "</div>";
+
+        // Création du FormContainer
+        $form_container = new FormContainer();
+
+        // Ajout du fil d'Ariane
+        $form_container->addBreadcrumb("Accueil", "index.php");
+        $form_container->addBreadcrumb("Nos responsables marketing");
+
+        // Ajout du titre principal
+        $form_container->addMainTitle("Nos responsables marketing");
+
+        // Check $articles not NULL
+        if ($articles !== null) {
+        // Ajout de chaque responsables marketing dans le FormContainer
+        foreach ($articles as $article) {
+          $form_container->addSubTitle("Nom " . htmlspecialchars($article['nom']));
+            $form_container->addDescription("Téléphone : " . htmlspecialchars($article['telephone']));
+          }
+      } else {
+        // Handle case where $articles is NULL
+        $form_container->addDescription("Aucun(e) secrétaire trouvé(e).");
+    }
+
+        // Rendu du contenu
+        echo $form_container->render();
+    }
+
+    // gestion des Clients 
+    public function renderClientList($clients)
+    {
+        $this->renderHeader();
+
+        $formContainer = new FormContainer();
+
+
+        if (!empty($clients)) {
+            $table = "<table class='table table-striped'>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Action</th> 
+                            </tr>
+                        </thead>
+                        <tbody>";
+            foreach ($clients as $client) {
+                $table .= "<tr>
+                                <td>{$client['nom']}</td>
+                                <td>{$client['prenom']}</td>
+                                <td>{$client['email']}</td>
+                                <td>{$client['telephone']}</td>
+                              <td>
+                                    <div class='btn-group'>
+                                        <form action='index.php' method='get'>
+                                            <input type='hidden' name='action' value='showClientDetails'>
+                                            <input type='hidden' name='id' value='{$client['id']}'>
+                                            <button type='submit' class='btn btn-primary display-btn' data-client-id='{$client['id']}'>Afficher</button>
+                                        </form>
+                                        <form action='index.php' method='get'>
+                                            <input type='hidden' name='action' value='modifClient'>
+                                            <input type='hidden' name='id' value='{$client['id']}'>
+                                            <button type='submit' class='btn btn-warning edit-btn' data-client-id='{$client['id']}'>Modifier</button>
+                                        </form>
+                                         <form action='index.php' method='get'>
+                                            <input type='hidden' name='action' value='montrerFormulaireRendezVous'>
+                                            <input type='hidden' name='id' value='{$client['id']}'>
+                                            <button type='submit' class='btn btn-success edit-btn' data-client-id='{$client['id']}'>Effectuer un achat</button>
+                                        </form>
+                                    </div>
+                                </td>
+
+                            </tr>";
             }
-            echo "</div>";
+
+
+            $table .= "</tbody></table>";
+            $formContainer->addElement('Liste des clients', $table);
         } else {
-            echo "<p>Aucun secrétaire trouvé.</p>";
+            $formContainer->addDescription("Aucun client trouvé.");
         }
-        $this->renderFooter();
+
+        $formContainer->addElement('', "<a href='index.php?action=creeClientForm' class='btn btn-primary'>Ajouter un nouveau client</a>");
+
+        echo $formContainer->render();
+
+        // Ajout du script JavaScript pour gérer l'affichage des attributs du client
+        echo "
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var displayButtons = document.querySelectorAll('.display-btn');
+                    displayButtons.forEach(function(button) {
+                        button.addEventListener('click', function() {
+                            var clientId = this.getAttribute('data-client-id');
+                            window.location.href = 'index.php?action=showClientDetails&id=' + clientId;
+                        });
+                    });
+                });
+            </script>
+        ";
+    }
+
+
+    public function renderClientDetails($clientDetails)
+    {
+        $this->renderHeader();
+
+        // Affichage des détails du client
+        echo "<h2>Détails du client</h2>";
+        echo "<ul>";
+        echo "<li><strong>Nom :</strong> {$clientDetails['nom']}</li>";
+        echo "<li><strong>Prénom :</strong> {$clientDetails['prenom']}</li>";
+        echo "<li><strong>Date de Naissance :</strong> {$clientDetails['date_de_naissance']}</li>";
+        echo "<li><strong>Email :</strong> {$clientDetails['email']}</li>";
+        echo "<li><strong>Téléphone :</strong> {$clientDetails['telephone']}</li>";
+        echo "<li><strong>Adresse :</strong> {$clientDetails['adresse']}</li>";
+        echo "<li><strong>Historique Médical :</strong> {$clientDetails['historique_medical']}</li>";
+        echo "</ul>";
+
+        // Bouton de retour vers le menu précédent
+        echo "<a href='javascript:history.back()' class='btn btn-primary'>Retour</a>";
+        echo "<a href='index.php?action=modifClient&id={$clientDetails['id']}' class='btn btn-warning'>Modifier</a>";
+        echo "<a href='index.php?action=montrerFormulaireRendezVous&id={$clientDetails['id']}' class='btn btn-success'>Effectuer un achat</a>";
+    }
+
+    public function renderCreeClientForm()
+    {
+        $this->renderHeader();
+
+        $form = new FormView("index.php?action=ajoutClient");
+
+        // Ajout des champs au formulaire
+        $form->addField('nom', 'nom', 'text', 'Nom:');
+        $form->addField('prenom', 'prenom', 'text', 'Prénom:');
+        $form->addField('date_de_naissance', 'date_de_naissance', 'date', 'Date de Naissance:');
+        $form->addField('email', 'email', 'email', 'Email:');
+        $form->addField('telephone', 'telephone', 'text', 'Téléphone:');
+        $form->addField('adresse', 'adresse', 'text', 'Adresse:');
+        $form->addField('historique_medical', 'historique_medical', 'textarea', 'Historique Médical:');
+
+        // Ajout des boutons au formulaire
+        $form->addButton('submit', 'Valider');
+
+        echo "<div class='container mt-5'>
+                <div class='row'>
+                    <div class='col-md-6 offset-md-3'>
+                        <div class='card'>
+                            <div class='card-header'>Ajouter un Client</div>
+                            <div class='card-body'>";
+
+        echo $form->build();
+
+        echo "         </div>
+                        </div>
+                    </div>
+                </div>
+              </div>";
+
+        // Ajout de JavaScript pour la validation du formulaire
+        echo "<script>
+              document.querySelector('form').onsubmit = function(event) {
+                  let nom = document.querySelector('[name=\"nom\"]').value;
+                  let prenom = document.querySelector('[name=\"prenom\"]').value;
+                  let date_de_naissance = document.querySelector('[name=\"date_de_naissance\"]').value;
+                  let email = document.querySelector('[name=\"email\"]').value;
+                  let telephone = document.querySelector('[name=\"telephone\"]').value;
+                  let adresse = document.querySelector('[name=\"adresse\"]').value;
+                  let historique_medical = document.querySelector('[name=\"historique_medical\"]').value;
+
+                  if(nom === '' || prenom === '' || date_de_naissance === '' || email === '' || telephone === '' || adresse === '' || historique_medical === '') {
+                      alert('Veuillez remplir tous les champs.');
+                      event.preventDefault(); // Empêche la soumission du formulaire
+                  }
+              };
+              </script>";
     }
 
     /**
-     * Affiche un formulaire pour ajouter ou modifier un secrétaire.
-     * @param array|null $secretaire Informations du secrétaire pour le formulaire de modification.
+     * Affiche un tableau à partir d'un titre, d'un tableau de données et de noms de colonnes personnalisés.
      */
-    public function afficherFormulaireSecretaire($secretaire = null) {
+    private function renderTable($title, $data, $rowCallback, $columns)
+    {
+        echo "<h2 class='mt-4'>{$title}</h2>";
+        echo "<table class='table table-striped table-bordered' id='dataTable'>"; // Ajout de l'ID 'dataTable'.
+        echo "<thead class='thead-dark'><tr>";
+
+        // Affichage des en-têtes de colonne personnalisés
+        foreach ($columns as $column) {
+            echo "<th>{$column}</th>";
+        }
+
+        echo "</tr></thead>";
+        echo "<tbody>";
+
+        foreach ($data as $item) {
+            $row = $rowCallback($item);
+            echo "<tr>";
+            foreach ($row as $cell) {
+                echo "<td>{$cell}</td>";
+            }
+            echo "</tr>";
+        }
+
+        echo "</tbody>";
+        echo "</table>";
+    }
+
+    /**
+     * Ajoute le script DataTables.
+     */
+    private function renderDataTableScript()
+    {
+        echo <<<HTML
+        <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "paging": true,
+                "pageLength": 10,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/French.json"
+                }
+            });
+
+            // Confirmation avant la suppression d'un utilisateur
+            $('form').on('submit', function(e) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer cet achat ?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+        </script>
+        HTML;
+    }
+
+    public function renderEditClientForm($client)
+    {
         $this->renderHeader();
-        $action = isset($secretaire) ? "index.php?action=mettreAJourSecretaire&id={$secretaire['id']}" : "index.php?action=creerSecretaire";
-        $titre = isset($secretaire) ? "Modifier le secrétaire" : "Ajouter un secrétaire";
-        
-        echo "<div class='container'>";
-        echo "<h1>{$titre}</h1>";
-        echo "<form action='{$action}' method='post'>";
-        echo "<div class='mb-3'>";
-        echo "<label for='prenom' class='form-label'>Prénom</label>";
-        echo "<input type='text' class='form-control' id='prenom' name='prenom' value='" . htmlspecialchars($secretaire['prenom'] ?? '') . "' required>";
+
+        // Création d'une nouvelle instance de FormView
+        $form = new FormView("index.php?action=miseAjourClient&id={$client['id']}");
+
+        // Ajout des champs au formulaire
+        $form->addField('nom', 'nom', 'text', 'Nom:', $client['nom']);
+        $form->addField('prenom', 'prenom', 'text', 'Prénom:', $client['prenom']);
+        $form->addField('date_de_naissance', 'date_de_naissance', 'date', 'Date de Naissance:', $client['date_de_naissance']);
+        $form->addField('email', 'email', 'email', 'Email:', $client['email']);
+        $form->addField('telephone', 'telephone', 'text', 'Téléphone:', $client['telephone']);
+        $form->addField('adresse', 'adresse', 'text', 'Adresse:', $client['adresse']);
+        $form->addField('historique_medical', 'historique_medical', 'textarea', 'Historique Médical:', $client['historique_medical']);
+
+        // Ajout des boutons au formulaire
+        $form->addButton('submit', 'Valider');
+
+        // Affichage du formulaire
+        echo "<div class='container mt-5'>
+                <div class='row'>
+                    <div class='col-md-6 offset-md-3'>
+                        <div class='card'>
+                            <div class='card-header'>Modifier le client</div>
+                            <div class='card-body'>";
+
+        echo $form->build();
+
+        echo "         </div>
+                        </div>
+                    </div>
+                </div>
+              </div>";
+
+        // Ajout de JavaScript pour la validation du formulaire
+        echo "<script>
+              document.querySelector('form').onsubmit = function(event) {
+                  let nom = document.querySelector('[name=\"nom\"]').value;
+                  let prenom = document.querySelector('[name=\"prenom\"]').value;
+                  let date_de_naissance = document.querySelector('[name=\"date_de_naissance\"]').value;
+                  let email = document.querySelector('[name=\"email\"]').value;
+                  let telephone = document.querySelector('[name=\"telephone\"]').value;
+                  let adresse = document.querySelector('[name=\"adresse\"]').value;
+                  let historique_medical = document.querySelector('[name=\"historique_medical\"]').value;
+
+                  if(nom === '' || prenom === '' || date_de_naissance === '' || email === '' || telephone === '' || adresse === '' || historique_medical === '') {
+                      alert('Veuillez remplir tous les champs.');
+                      event.preventDefault(); // Empêche la soumission du formulaire
+                  }
+              };
+              </script>";
+    }
+
+    public function renderCreateAchatForm($articles, $clients)
+    {
+        $this->renderHeader();
+
+        echo "<div class='container mt-5'>";
+        echo "<h2 class='text-center mb-4'>Créer un achat</h2>";
+        echo "<form action='index.php?action=ajouterRendezVous' method='post'>";
+
+        echo "<div class='form-group row'>";
+        echo "<label for='article' class='col-sm-3 col-form-label'>Médecin:</label>";
+        echo "<div class='col-sm-9'>";
+        echo "<select class='form-control' id='article' name='article' required>";
+        foreach ($articles as $article) {
+            echo "<option value='{$article['id']}'>{$article['prenom']} {$article['nom']}  {$article['specialite']}</option>";
+        }
+        echo "</select>";
         echo "</div>";
-        echo "<div class='mb-3'>";
-        echo "<label for='nom' class='form-label'>Nom</label>";
-        echo "<input type='text' class='form-control' id='nom' name='nom' value='" . htmlspecialchars($secretaire['nom'] ?? '') . "' required>";
         echo "</div>";
-        echo "<div class='mb-3'>";
-        echo "<label for='telephone' class='form-label'>Téléphone</label>";
-        echo "<input type='text' class='form-control' id='telephone' name='telephone' value='" . htmlspecialchars($secretaire['telephone'] ?? '') . "' required>";
+
+        echo "<div class='form-group row'>";
+        echo "<label for='client' class='col-sm-3 col-form-label'>Client:</label>";
+        echo "<div class='col-sm-9'>";
+        echo "<select class='form-control' id='client' name='client' required>";
+        foreach ($clients as $client) {
+            echo "<option value='{$client['id']}'>{$client['prenom']} {$client['nom']}</option>";
+        }
+        echo "</select>";
         echo "</div>";
-        echo "<button type='submit' class='btn btn-primary'>" . (isset($secretaire) ? "Mettre à jour" : "Ajouter") . "</button>";
+        echo "</div>";
+
+        echo "<div class='form-group row'>";
+        echo "<label for='achat' class='col-sm-3 col-form-label'>Date et heure du achat:</label>";
+        echo "<div class='col-sm-9'>";
+        echo "<input type='datetime-local' class='form-control' id='achat' name='achat' required>";
+        echo "</div>";
+        echo "</div>";
+
+        echo "<div class='form-group row'>";
+        echo "<label for='raison' class='col-sm-3 col-form-label'>Raison du achat:</label>";
+        echo "<div class='col-sm-9'>";
+        echo "<input type='text' class='form-control' id='raison' name='raison' required>";
+        echo "</div>";
+        echo "</div>";
+
+        echo "<div class='form-group row'>";
+        echo "<label for='remarques' class='col-sm-3 col-form-label'>Commentaires:</label>";
+        echo "<div class='col-sm-9'>";
+        echo "<textarea class='form-control' id='remarques' name='remarques' rows='4' cols='50'></textarea>";
+        echo "</div>";
+        echo "</div>";
+
+        echo "<div class='text-right'>";
+        echo "<button type='submit' class='btn btn-primary'>Valider le achat</button>";
+        echo "<a href='index.php?action=listeClients' class='btn btn-success'>Retour</a>";
+        echo "</div>";
+
         echo "</form>";
         echo "</div>";
-        $this->renderFooter();
     }
+
+    public function marketingAchat($achat)
+    {
+        $this->renderHeader();
+
+        echo <<<HTML
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#achat">Achat</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="achat">
+        HTML;
+
+        // achat
+        $achatColumns = ['Médecin ID', 'Client ID', 'Date et Heure', 'Raison', 'Statut', 'Commentaires', 'Action'];
+        $this->renderTable("Liste des achat", $achat, function ($achatItem) {
+            return [
+                htmlspecialchars($achatItem['article_id']),
+                htmlspecialchars($achatItem['client_id']),
+                htmlspecialchars($achatItem['date_heure']),
+                htmlspecialchars($achatItem['raison']),
+                htmlspecialchars($achatItem['statut']),
+                htmlspecialchars($achatItem['commentaires']),
+                $this->getActionButton($achatItem)
+            ];
+        }, $achatColumns);
+
+        echo <<<HTML
+                        </div>
+                    </div> <!-- Fin de la tab-content -->
+                </div> <!-- Fin de la card-body -->
+            </div> <!-- Fin de la card -->
+        </div> <!-- Fin du container -->
+        HTML;
+
+        $this->renderDataTableScript();
+    }
+
+
+
+    public function marketingConfirmedAchat($achat)
+    {
+        $this->renderHeader();
+
+        echo <<<HTML
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#achat">Achat</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="achat">
+        HTML;
+
+        // achat
+        $achatColumns = ['Médecin ID', 'Client ID', 'Date et Heure', 'Raison', 'Statut', 'Commentaires', 'Action'];
+        $this->renderTable("Liste des achat", $achat, function ($achatItem) {
+            return [
+                htmlspecialchars($achatItem['article_id']),
+                htmlspecialchars($achatItem['client_id']),
+                htmlspecialchars($achatItem['date_heure']),
+                htmlspecialchars($achatItem['raison']),
+                htmlspecialchars($achatItem['statut']),
+                htmlspecialchars($achatItem['commentaires']),
+                $this->getActionButton($achatItem)
+            ];
+        }, $achatColumns);
+
+        echo <<<HTML
+                        </div>
+                    </div> <!-- Fin de la tab-content -->
+                </div> <!-- Fin de la card-body -->
+            </div> <!-- Fin de la card -->
+        </div> <!-- Fin du container -->
+        HTML;
+
+        $this->renderDataTableScript();
+    }
+
+
+    public function marketingPendingAchat($achat)
+    {
+        $this->renderHeader();
+
+        echo <<<HTML
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#achat">Achat</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="achat">
+        HTML;
+
+        // achat
+        $achatColumns = ['Médecin ID', 'Client ID', 'Date et Heure', 'Raison', 'Statut', 'Commentaires', 'Action'];
+        $this->renderTable("Liste des achat", $achat, function ($achatItem) {
+            return [
+                htmlspecialchars($achatItem['article_id']),
+                htmlspecialchars($achatItem['client_id']),
+                htmlspecialchars($achatItem['date_heure']),
+                htmlspecialchars($achatItem['raison']),
+                htmlspecialchars($achatItem['statut']),
+                htmlspecialchars($achatItem['commentaires']),
+                $this->getActionButton($achatItem)
+            ];
+        }, $achatColumns);
+
+        echo <<<HTML
+                        </div>
+                    </div> <!-- Fin de la tab-content -->
+                </div> <!-- Fin de la card-body -->
+            </div> <!-- Fin de la card -->
+        </div> <!-- Fin du container -->
+        HTML;
+
+        $this->renderDataTableScript();
+    }
+
+
+    public function marketingCancelledAchat($achat)
+    {
+        $this->renderHeader();
+
+        echo <<<HTML
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#achat">Achat</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="achat">
+        HTML;
+
+        // Achat
+        $achatColumns = ['Médecin ID', 'Client ID', 'Date et Heure', 'Raison', 'Statut', 'Commentaires', 'Action'];
+        $this->renderTable("Liste des achat", $achat, function ($achatItem) {
+            return [
+                htmlspecialchars($achatItem['article_id']),
+                htmlspecialchars($achatItem['client_id']),
+                htmlspecialchars($achatItem['date_heure']),
+                htmlspecialchars($achatItem['raison']),
+                htmlspecialchars($achatItem['statut']),
+                htmlspecialchars($achatItem['commentaires']),
+                $this->getActionButton($achatItem)
+            ];
+        }, $achatColumns);
+
+        echo <<<HTML
+                        </div>
+                    </div> <!-- Fin de la tab-content -->
+                </div> <!-- Fin de la card-body -->
+            </div> <!-- Fin de la card -->
+        </div> <!-- Fin du container -->
+        HTML;
+
+        $this->renderDataTableScript();
+    }
+
+    private function getActionButton($achatItem)
+    {
+        $id = htmlspecialchars($achatItem['id']);
+        $statut = htmlspecialchars($achatItem['statut']);
+        $button = '';
+
+        if ($statut == 'annule') {
+            $button = "<a href='index.php?action=changerStatutRendezVous&id={$id}&statut=confirme' class='btn btn-success'>Confirmer</a>";
+        } elseif ($statut == 'en_attente') {
+            $button = "<a href='index.php?action=changerStatutRendezVous&id={$id}&statut=confirme' class='btn btn-success'>Confirmer</a>";
+        } elseif ($statut == 'confirme') {
+            $button = "<a href='index.php?action=changerStatutRendezVous&id={$id}&statut=annule' class='btn btn-danger'>Annuler</a>";
+            $button .= " <a href='index.php?action=changerStatutRendezVous&id={$id}&statut=en_attente' class='btn btn-warning'>Mettre en attente</a>";
+        }
+
+        return $button;
+    }
+
+    public function marketingHoraires($horaires)
+    {
+        $this->renderHeader();
+
+        echo <<<HTML
+          <div class="container mt-5">
+              <div class="card">
+                  <div class="card-header">
+                      <ul class="nav nav-tabs card-header-tabs" id="myTabs">
+                          <li class="nav-item">
+                              <a class="nav-link active" data-toggle="tab" href="#horaires">Horaires de Travail</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="card-body">
+                      <div class="tab-content">
+                          <div class="tab-pane fade show active" id="horaires">
+          HTML;
+
+        // Horaires
+        $horairesColumns = ['Médecin', 'Jour de la Semaine', 'Heure Début', 'Heure Fin', 'Type', 'Commentaires', 'Actions'];
+        $this->renderTable("Liste des horaires de travail", $horaires, function ($horaire) {
+            return [
+                htmlspecialchars($horaire['article_id']),
+                htmlspecialchars($horaire['jour_de_la_semaine']),
+                htmlspecialchars($horaire['heure_debut']),
+                htmlspecialchars($horaire['heure_fin']),
+                htmlspecialchars($horaire['type']),
+                htmlspecialchars($horaire['commentaire']),
+                "<a href='index.php?action=modifHoraires&id={$horaire['id']}' class='btn btn-primary btn-sm'>Modifier</a>
+                  <form method='post' action='index.php?action=supprimeHoraires' style='display: inline;'>
+                  <input type='hidden' name='id' value='{$horaire['id']}'>
+                  <button class='btn btn-danger btn-sm' type='submit'>Supprimer</button>
+                  </form>"
+            ];
+        }, $horairesColumns);
+
+        echo <<<HTML
+                          </div>
+                      </div> <!-- Fin de la tab-content -->
+                  </div> <!-- Fin de la card-body -->
+              </div> <!-- Fin de la card -->
+          </div> <!-- Fin du container -->
+          HTML;
+
+        $this->renderDataTableScript();
+    }
+
+    public function renderChangeHorairesForm($horaire)
+    {
+        $this->renderHeader();
+
+        // Création d'une nouvelle instance de FormView
+        $form = new FormView("index.php?action=changeHoraires&id={$horaire['id']}");
+
+        // Ajout des champs au formulaire
+        $form->addField('article_id', 'article_id', 'text', 'ID Article:', $horaire['article_id']);
+        $form->addField('jour_de_la_semaine', 'jour_de_la_semaine', 'text', 'Jour de la Semaine:', $horaire['jour_de_la_semaine']);
+        $form->addField('heure_debut', 'heure_debut', 'time', 'Heure Début:', $horaire['heure_debut']);
+        $form->addField('heure_fin', 'heure_fin', 'time', 'Heure Fin:', $horaire['heure_fin']);
+        $form->addField('type', 'type', 'text', 'Type:', $horaire['type']);
+        $form->addField('commentaire', 'commentaire', 'textarea', 'Commentaire:', $horaire['commentaire']);
+
+        // Ajout des boutons au formulaire
+        $form->addButton('submit', 'Valider');
+
+        // Affichage du formulaire
+        echo "<div class='container mt-5'>
+                  <div class='row'>
+                      <div class='col-md-6 offset-md-3'>
+                          <div class='card'>
+                              <div class='card-header'>Modifier l'horaire de travail</div>
+                              <div class='card-body'>";
+
+        echo $form->build();
+
+        echo "         </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>";
+
+        // Ajout de JavaScript pour la validation du formulaire
+        echo "<script>
+                document.querySelector('form').onsubmit = function(event) {
+                    let article_id = document.querySelector('[name=\"article_id\"]').value;
+                    let jour_de_la_semaine = document.querySelector('[name=\"jour_de_la_semaine\"]').value;
+                    let heure_debut = document.querySelector('[name=\"heure_debut\"]').value;
+                    let heure_fin = document.querySelector('[name=\"heure_fin\"]').value;
+                    let type = document.querySelector('[name=\"type\"]').value;
+                    let commentaire = document.querySelector('[name=\"commentaire\"]').value;
+
+                    if(article_id === '' || jour_de_la_semaine === '' || heure_debut === '' || heure_fin === '' || type === '' || commentaire === '') {
+                        alert('Veuillez remplir tous les champs.');
+                        event.preventDefault(); // Empêche la soumission du formulaire
+                    }
+                };
+                </script>";
+    }
+
 }
-?>
