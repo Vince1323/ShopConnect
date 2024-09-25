@@ -1,0 +1,1403 @@
+---- BaseModel.php
+<?php
+class BaseModel {
+    protected $conn;
+
+    public function __construct() {
+        $db_host = "localhost";
+        $db_user = "root";
+        $db_password = "Vinyjeff";
+        $db_name = "shopconnect";
+
+        $this->conn = new mysqli($db_host, $db_user, $db_password, $db_name);
+
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
+        }
+    }
+}
+?>
+
+---- UserModel.php
+<?php
+
+require_once 'BaseModel.php';
+
+class UserModel extends BaseModel
+{
+
+    public function getUsers()
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Utilisateur");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result === false) {
+            throw new Exception("Erreur lors de l'exécution: " . $this->conn->error);
+        }
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getUserById($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Utilisateur WHERE id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    public function registerUser($username, $hashedPassword, $email)
+    {
+        $role = "Client"; // Définir le rôle par défaut
+
+        $stmt = $this->conn->prepare("INSERT INTO Utilisateur (nom, password, email, role) VALUES (?, ?, ?, ?)");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ssss", $username, $hashedPassword, $email, $role);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        return true;
+    }
+
+    public function authenticateUser($email, $password)
+    {
+        $stmt = $this->conn->prepare("SELECT id, nom, password, role FROM Utilisateur WHERE email = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("s", $email);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateById($id, $data)
+    {
+        $stmt = $this->conn->prepare("UPDATE Utilisateur SET nom=?, prenom=?, email=?, role=?, language=?, auth_provider=? WHERE id=?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ssssssi", 
+        $data['nom'], 
+        $data['prenom'], 
+        $data['email'], 
+        $data['role'], 
+        $data['language'], 
+        $data['auth_provider'], 
+        $id
+    );
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        return true;
+    }
+
+    public function deleteById($id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM Utilisateur WHERE id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $stmt->close();
+        return true;
+    }
+
+    public function getMedecinByUserId($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Article WHERE utilisateur_id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    public function getSecretaireByUserId($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Boutique WHERE utilisateur_id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+}
+
+
+---- ArticleModel.php
+<?php
+require_once 'BaseModel.php';
+
+class ArticleModel extends BaseModel{
+    // Propriétés représentant les colonnes de la table Articles
+    public $id;
+    public $utilisateur_id;
+    public $nom;
+    public $prenom;
+    public $specialite;
+    public $telephone;
+
+    private $table_name = "Article";
+
+    // Constructeur avec $db comme connexion à la base de données
+    public function __construct() {
+      parent::__construct();
+    }
+
+    // Méthode pour lire tous les articles
+    public function lire() {
+        $query = "SELECT * FROM " . $this->table_name;
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    // Méthode pour lire un seul article par ID
+      public function lireUn($id) {
+          $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+          $stmt = $this->conn->prepare($query);
+          $stmt->bind_param("i", $id); // Utiliser bind_param au lieu de bindParam
+          $stmt->execute();
+          $result = $stmt->get_result();
+          return $result->fetch_assoc();
+      }
+
+    // Ajouter d'autres méthodes ici pourmettre à jour, et supprimer des articles
+
+    // Méthode pour créer un nouveau article
+    public function creer() {
+        $query = "INSERT INTO " . $this->table_name . " SET  utilisateur_id=:utilisateur_id, nom=:nom, prenom=:prenom, specialite=:specialite, telephone=:telephone";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer les données
+        $this->email = htmlspecialchars(strip_tags($this-> utilisateur_id));
+        $this->nom = htmlspecialchars(strip_tags($this->nom));
+        $this->prenom = htmlspecialchars(strip_tags($this->prenom));
+        $this->specialite = htmlspecialchars(strip_tags($this->specialite));
+        $this->telephone = htmlspecialchars(strip_tags($this->telephone));
+
+        // Lier les valeurs
+        $stmt->bind_param("issss", $this->utilisateur_id, $this->nom, $this->prenom, $this->specialite, $this->telephone);
+
+        if($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+        // Méthode pour mettre à jour un article
+        public function mettreAJour($id, $data) {
+            $query = "UPDATE " . $this->table_name . "
+                      SET
+                        utilisateur_id = ?,
+                        nom = ?,
+                        prenom = ?,
+                        specialite = ?,
+                        telephone = ?
+                      WHERE
+                        id = ?";
+
+            $stmt = $this->conn->prepare($query);
+
+            if (!$stmt) {
+                die("Erreur de préparation de la requête : " . $this->conn->error);
+            }
+
+            // Nettoyer les données
+            $utilisateur_id = htmlspecialchars(strip_tags($data['utilisateur_id']));
+            $nom = htmlspecialchars(strip_tags($data['nom']));
+            $prenom = htmlspecialchars(strip_tags($data['prenom']));
+            $specialite = htmlspecialchars(strip_tags($data['specialite']));
+            $telephone = htmlspecialchars(strip_tags($data['telephone']));
+            $id = htmlspecialchars(strip_tags($id));
+
+            // Lier les nouvelles valeurs
+            if (!$stmt->bind_param('issssi', $utilisateur_id, $nom, $prenom, $specialite, $telephone, $id)) {
+                die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+            }
+
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+            }
+        }
+
+    // Méthode pour supprimer un article
+    public function supprimer() {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+    // Nettoyer l'id
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+    // Lier l'id
+        $stmt->bind_param("i", $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+}
+
+?>
+
+
+---- ArticleBoutiqueModel.php
+<?php
+require_once 'BaseModel.php';
+
+class ArticleBoutiqueModel extends BaseModel {
+    public $article_id;
+    public $boutique_id;
+
+    private $table_name = "ArticleBoutique";
+
+    public function __construct() {
+        parent::__construct();
+    }
+
+    // Méthode pour lire toutes les associations médecin-service
+    public function lire() {
+        $query = "SELECT * FROM " . $this->table_name;
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        if ($stmt->execute()) {
+            return $stmt->get_result();
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour lire une association médecin-service par ID du médecin et ID du service
+    public function lireUn($article_id, $boutique_id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE article_id = ? AND boutique_id = ? LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        if (!$stmt->bind_param("ii", $article_id, $boutique_id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            $result = $stmt->get_result();
+            return $result->fetch_assoc();
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour créer une nouvelle association médecin-service
+    public function creer($data) {
+        $query = "INSERT INTO " . $this->table_name . " (article_id, boutique_id) VALUES (?, ?)";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer les données
+        $article_id = htmlspecialchars(strip_tags($data['article_id']));
+        $boutique_id = htmlspecialchars(strip_tags($data['boutique_id']));
+
+        // Lier les valeurs
+        if (!$stmt->bind_param("ii", $article_id, $boutique_id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour mettre à jour une association médecin-service
+    public function mettreAJour($article_id, $boutique_id, $data) {
+        $query = "UPDATE " . $this->table_name . "
+                  SET
+                    active = ?
+                  WHERE
+                    article_id = ? AND boutique_id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer les données
+        $active = htmlspecialchars(strip_tags($data['active']));
+        $article_id = htmlspecialchars(strip_tags($article_id));
+        $boutique_id = htmlspecialchars(strip_tags($boutique_id));
+
+        // Lier les nouvelles valeurs
+        if (!$stmt->bind_param('iii', $active, $article_id, $boutique_id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour supprimer une association 
+    public function supprimer() {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+    // Nettoyer l'id
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+    // Lier l'id
+        $stmt->bind_param("i", $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+}
+?>
+
+---- FacturesModel.php
+<?php
+require_once 'BaseModel.php';
+
+class FacturesModel extends BaseModel {
+    public $id;
+    public $rendezvous_id;
+    public $montant;
+    public $statut_paiement; // 'paye' ou 'impaye'
+    public $date_facture;
+
+    public function __construct($db) {
+        parent::__construct($db);
+        $this->table_name = "Factures";
+    }
+
+    // Créer une nouvelle facture
+    public function creerFacture() {
+        $query = "INSERT INTO " . $this->table_name . " (rendezvous_id, montant, statut_paiement, date_facture) VALUES (:rendezvous_id, :montant, :statut_paiement, NOW())";
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer et lier les paramètres
+        $this->rendezvous_id = htmlspecialchars(strip_tags($this->rendezvous_id));
+        $this->montant = htmlspecialchars(strip_tags($this->montant));
+        $this->statut_paiement = htmlspecialchars(strip_tags($this->statut_paiement));
+
+        $stmt->bindParam(':rendezvous_id', $this->rendezvous_id);
+        $stmt->bindParam(':montant', $this->montant);
+        $stmt->bindParam(':statut_paiement', $this->statut_paiement);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Supprimer une nouvelle facture
+    public function supprimerFacture($id) {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+    
+        // Nettoyer l'ID avant de l'utiliser dans la requête
+        $id = htmlspecialchars(strip_tags($id));
+        $stmt->bindParam(':id', $id);
+    
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Modifier une nouvelle facture
+    public function modifierFacture($id, $nouveauMontant, $nouveauStatutPaiement, $dateFacture = null) {
+        $query = "UPDATE " . $this->table_name . "
+                  SET montant = :montant, 
+                      statut_paiement = :statut_paiement" . 
+                      (is_null($dateFacture) ? "" : ", date_facture = :date_facture") . 
+                  " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+    
+        // Nettoyer et lier les paramètres
+        $id = htmlspecialchars(strip_tags($id));
+        $nouveauMontant = htmlspecialchars(strip_tags($nouveauMontant));
+        $nouveauStatutPaiement = htmlspecialchars(strip_tags($nouveauStatutPaiement));
+    
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':montant', $nouveauMontant);
+        $stmt->bindParam(':statut_paiement', $nouveauStatutPaiement);
+        if (!is_null($dateFacture)) {
+            $dateFacture = htmlspecialchars(strip_tags($dateFacture));
+            $stmt->bindParam(':date_facture', $dateFacture);
+        }
+    
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+    
+    // Mettre à jour le statut de paiement d'une facture
+    public function mettreAJourStatutPaiement($id, $nouveauStatut) {
+        $query = "UPDATE " . $this->table_name . " SET statut_paiement = :statut_paiement WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $id = htmlspecialchars(strip_tags($id));
+        $nouveauStatut = htmlspecialchars(strip_tags($nouveauStatut));
+
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':statut_paiement', $nouveauStatut);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Rechercher par rendez-vous
+    public function rechercherParRendezVous($rendezvous_id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE rendezvous_id = :rendezvous_id";
+        $stmt = $this->conn->prepare($query);
+    
+        // Nettoyer l'ID du rendez-vous avant de l'utiliser dans la requête
+        $rendezvous_id = htmlspecialchars(strip_tags($rendezvous_id));
+        $stmt->bindParam(':rendezvous_id', $rendezvous_id);
+    
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+    // Rechercher par patient
+    public function rechercherParPatient($patient_id) {
+        $query = "SELECT f.* FROM " . $this->table_name . " AS f JOIN RendezVous AS r ON f.rendezvous_id = r.id WHERE r.patient_id = :patient_id";
+        $stmt = $this->conn->prepare($query);
+    
+        // Nettoyer l'ID du patient avant de l'utiliser dans la requête
+        $patient_id = htmlspecialchars(strip_tags($patient_id));
+        $stmt->bindParam(':patient_id', $patient_id);
+    
+        $stmt->execute();
+    
+        return $stmt;
+    }
+    
+    
+}
+
+?>
+
+---- HistoriqueAchatModel.php
+<?php
+require_once 'BaseModel.php';
+
+class HistoriqueAchatsModel extends BaseModel {
+    public $id;
+    public $client_id;
+    public $article_id;
+    public $date_visite;
+    public $diagnostic;
+    public $traitement;
+    public $commentaires;
+
+    private $table_name = "HistoriqueAchats";
+
+    // Constructeur avec $db comme connexion à la base de données
+    public function __construct() {
+        parent::__construct();
+    }
+
+    // Méthode pour lire toutes les entrées d'historique des achats
+    public function lire() {
+        $query = "SELECT * FROM " . $this->table_name;
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    // Méthode pour lire une seule entrée d'historique des achats par ID
+    public function lireUn($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    // Méthode pour créer une nouvelle entrée d'historique des achats
+    public function creer() {
+        $query = "INSERT INTO " . $this->table_name . "
+                  SET client_id = ?, article_id = ?, date_visite = ?, diagnostic = ?, traitement = ?, commentaires = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer les données
+        $this->client_id = htmlspecialchars(strip_tags($this->client_id));
+        $this->article_id = htmlspecialchars(strip_tags($this->article_id));
+        $this->date_visite = htmlspecialchars(strip_tags($this->date_visite));
+        $this->diagnostic = htmlspecialchars(strip_tags($this->diagnostic));
+        $this->traitement = htmlspecialchars(strip_tags($this->traitement));
+        $this->commentaires = htmlspecialchars(strip_tags($this->commentaires));
+
+        // Lier les valeurs
+        $stmt->bind_param("iissss", $this->client_id, $this->article_id, $this->date_visite, $this->diagnostic, $this->traitement, $this->commentaires);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Méthode pour mettre à jour une entrée d'historique des achats
+    public function mettreAJour($id, $data) {
+        $query = "UPDATE " . $this->table_name . "
+                  SET client_id = ?,
+                      article_id = ?,
+                      date_visite = ?,
+                      diagnostic = ?,
+                      traitement = ?,
+                      commentaires = ?
+                  WHERE id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer les données
+        $client_id = htmlspecialchars(strip_tags($data['client_id']));
+        $article_id = htmlspecialchars(strip_tags($data['article_id']));
+        $date_visite = htmlspecialchars(strip_tags($data['date_visite']));
+        $diagnostic = htmlspecialchars(strip_tags($data['diagnostic']));
+        $traitement = htmlspecialchars(strip_tags($data['traitement']));
+        $commentaires = htmlspecialchars(strip_tags($data['commentaires']));
+        $id = htmlspecialchars(strip_tags($id));
+
+        // Lier les valeurs
+        if (!$stmt->bind_param('iissssi', $client_id, $article_id, $date_visite, $diagnostic, $traitement, $commentaires, $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour supprimer une entrée d'historique des achats
+    public function supprimer($id) {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer l'id
+        $id = htmlspecialchars(strip_tags($id));
+
+        // Lier l'id
+        if (!$stmt->bind_param('i', $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour rechercher des entrées par client
+    public function rechercherParPatient($client_id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE client_id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer l'id du client
+        $client_id = htmlspecialchars(strip_tags($client_id));
+
+        // Lier les valeurs
+        if (!$stmt->bind_param('i', $client_id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+}
+?>
+
+---- BoutiqueModel.php
+<?php
+require_once 'BaseModel.php';
+
+class BoutiqueModel extends BaseModel
+{
+    public $id;
+    public $nom;
+    public $description;
+
+    private $table_name = "Boutique";
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    // Méthode pour lire toutes les boutiques
+    public function lire()
+    {
+        $query = "SELECT * FROM " . $this->table_name;
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    // Méthode pour lire une seule boutique par ID
+    public function lireUn($id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    // Méthode pour créer un nouveau boutique
+    public function creer($data)
+    {
+        $query = "INSERT INTO " . $this->table_name . " (nom, description) VALUES (?, ?)";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer les données
+        $nom = htmlspecialchars(strip_tags($data['nom']));
+        $description = htmlspecialchars(strip_tags($data['description']));
+
+        // Lier les valeurs
+        $stmt->bind_param("ss", $nom, $description);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Méthode pour mettre à jour un boutique
+    public function mettreAJour($id, $data)
+    {
+        $query = "UPDATE " . $this->table_name . "
+                  SET
+                    nom = ?,
+                    description = ?
+                  WHERE
+                    id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer les données
+        $nom = htmlspecialchars(strip_tags($data['nom']));
+        $description = htmlspecialchars(strip_tags($data['description']));
+        $id = htmlspecialchars(strip_tags($id));
+
+        // Lier les nouvelles valeurs
+        if (!$stmt->bind_param('ssi', $nom, $description, $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour supprimer un boutique
+    public function supprimer($id)
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer l'id
+        $id = htmlspecialchars(strip_tags($id));
+
+        // Lier l'id
+        if (!$stmt->bind_param('i', $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour rechercher un boutique par ID
+    public function rechercherParID($id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+
+        $id = htmlspecialchars(strip_tags($id));
+        $stmt->bind_param('i', $id);
+
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+}
+
+
+
+---- ClientModel.php
+<?php
+require_once 'BaseModel.php';
+
+class ClientModel extends BaseModel
+{
+    public $id;
+    public $nom;
+    public $prenom;
+    public $date_de_naissance;
+    public $email;
+    public $telephone;
+    public $adresse;
+    public $historique_medical;
+
+    private $table_name = "Client";
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    // Méthode pour lire tous les médecins
+    public function lire()
+    {
+        $query = "SELECT * FROM " . $this->table_name;
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    // Méthode pour lire un seul médecin par ID
+    public function lireUn($id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id); // Utiliser bind_param au lieu de bindParam
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    // Ajouter un client
+    public function creer($data)
+    {
+        $query = "INSERT INTO " . $this->table_name . "
+                  (nom, prenom, date_de_naissance, email, telephone, adresse, historique_medical)
+                  VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer et lier les paramètres
+        $nom = htmlspecialchars(strip_tags($data['nom']));
+        $prenom = htmlspecialchars(strip_tags($data['prenom']));
+        $date_de_naissance = htmlspecialchars(strip_tags($data['date_de_naissance']));
+        $email = htmlspecialchars(strip_tags($data['email']));
+        $telephone = htmlspecialchars(strip_tags($data['telephone']));
+        $adresse = htmlspecialchars(strip_tags($data['adresse']));
+        $historique_medical = htmlspecialchars(strip_tags($data['historique_medical']));
+
+        if (!$stmt->bind_param('sssssss', $nom, $prenom, $date_de_naissance, $email, $telephone, $adresse, $historique_medical)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+
+        return false;
+    }
+
+    // Mettre à jour un client
+    public function mettreAJour($id, $data)
+    {
+        $query = "UPDATE " . $this->table_name . "
+                  SET
+                    nom = ?,
+                    prenom = ?,
+                    date_de_naissance = ?,
+                    email = ?,
+                    telephone = ?,
+                    adresse = ?,
+                    historique_medical = ?
+                  WHERE
+                   id = ?";
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer et lier les paramètres, y compris l'ID
+        $id = htmlspecialchars(strip_tags($id));
+        $nom = htmlspecialchars(strip_tags($data['nom']));
+        $prenom = htmlspecialchars(strip_tags($data['prenom']));
+        $date_de_naissance = htmlspecialchars(strip_tags($data['date_de_naissance']));
+        $email = htmlspecialchars(strip_tags($data['email']));
+        $telephone = htmlspecialchars(strip_tags($data['telephone']));
+        $adresse = htmlspecialchars(strip_tags($data['adresse']));
+        $historique_medical = htmlspecialchars(strip_tags($data['historique_medical']));
+
+        if (!$stmt->bind_param('sssssssi', $nom, $prenom, $date_de_naissance, $email, $telephone, $adresse, $historique_medical, $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+
+        return false;
+    }
+
+    // Supprimer un client
+    public function supprimer()
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer l'id
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // Lier l'id
+        $stmt->bind_param("i", $this->id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+
+---- NotesModel.php
+<?php
+require_once 'BaseModel.php';
+
+class NotesModel extends BaseModel {
+    public $id;
+    public $rendezvous_id;
+    public $note;
+    public $date_creation;
+
+    public function __construct($db) {
+        parent::__construct($db);
+        $this->table_name = "Notes";
+    }
+
+    // Ajouter une note à un rendez-vous
+    public function ajouterNote() {
+        $query = "INSERT INTO " . $this->table_name . " (rendezvous_id, note, date_creation) VALUES (:rendezvous_id, :note, NOW())";
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer et lier les paramètres
+        $this->rendezvous_id = htmlspecialchars(strip_tags($this->rendezvous_id));
+        $this->note = htmlspecialchars(strip_tags($this->note));
+
+        $stmt->bindParam(':rendezvous_id', $this->rendezvous_id);
+        $stmt->bindParam(':note', $this->note);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Mettre à jour une note
+    public function mettreAJourNote($id) {
+        $query = "UPDATE " . $this->table_name . " SET note = :note WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer et lier l'ID et la note
+        $id = htmlspecialchars(strip_tags($id));
+        $this->note = htmlspecialchars(strip_tags($this->note));
+
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':note', $this->note);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    // Rechercher des notes par ID de rendez-vous
+    public function rechercherNotesParRendezVous($rendezvous_id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE rendezvous_id = :rendezvous_id";
+        $stmt = $this->conn->prepare($query);
+
+        $rendezvous_id = htmlspecialchars(strip_tags($rendezvous_id));
+        $stmt->bindParam(':rendezvous_id', $rendezvous_id);
+
+        $stmt->execute();
+        return $stmt;
+    }
+
+    // Supprimer une note
+    public function supprimerNote($id) {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $id = htmlspecialchars(strip_tags($id));
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+}
+
+
+?>
+
+---- AchatModel.php
+<?php
+require_once 'BaseModel.php';
+
+class AchatModel extends BaseModel
+{
+    public $id;
+    public $article_id;
+    public $client_id;
+    public $date_heure;
+    public $raison;
+    public $statut; // Exemple: 'en_attente', 'confirme', 'annule'
+    public $commentaires;
+
+    private $table_name = "Achat";
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    // Méthode pour lire tous les rendez-vous
+    public function lire()
+    {
+        $query = "SELECT * FROM " . $this->table_name;
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+
+    // Méthode pour lire un seul rendez-vous par ID
+    public function lireUn($id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    // Méthode pour créer un nouveau rendez-vous
+    public function creer($data)
+    {
+        $query = "INSERT INTO " . $this->table_name . " (article_id, client_id, date_heure, raison, statut, commentaires) VALUES (?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Nettoyer les données
+        $article_id = htmlspecialchars(strip_tags($data['article_id']));
+        $client_id = htmlspecialchars(strip_tags($data['client_id']));
+        $date_heure = htmlspecialchars(strip_tags($data['date_heure']));
+        $raison = htmlspecialchars(strip_tags($data['raison']));
+        $statut = htmlspecialchars(strip_tags($data['statut']));
+        $commentaires = htmlspecialchars(strip_tags($data['commentaires']));
+
+        // Lier les valeurs
+        $stmt->bind_param("iissss", $article_id, $client_id, $date_heure, $raison, $statut, $commentaires);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Méthode pour mettre à jour un rendez-vous
+    public function mettreAJour($id, $data)
+    {
+        $query = "UPDATE " . $this->table_name . "
+                  SET
+                    article_id = ?,
+                    client_id = ?,
+                    date_heure = ?,
+                    raison = ?,
+                    statut = ?,
+                    commentaires = ?
+                  WHERE
+                    id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer les données
+        $article_id = htmlspecialchars(strip_tags($data['article_id']));
+        $client_id = htmlspecialchars(strip_tags($data['client_id']));
+        $date_heure = htmlspecialchars(strip_tags($data['date_heure']));
+        $raison = htmlspecialchars(strip_tags($data['raison']));
+        $statut = htmlspecialchars(strip_tags($data['statut']));
+        $commentaires = htmlspecialchars(strip_tags($data['commentaires']));
+        $id = htmlspecialchars(strip_tags($id));
+
+        // Lier les nouvelles valeurs
+        if (!$stmt->bind_param('iissssi', $article_id, $client_id, $date_heure, $raison, $statut, $commentaires, $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour supprimer un rendez-vous
+    public function supprimer($id)
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        // Nettoyer l'id
+        $id = htmlspecialchars(strip_tags($id));
+
+        // Lier l'id
+        if (!$stmt->bind_param('i', $id)) {
+            die("Erreur lors de la liaison des paramètres : " . $stmt->error);
+        }
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+        }
+    }
+
+    // Méthode pour rechercher un rendez-vous par ID
+    public function rechercherParID($id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+
+        $id = htmlspecialchars(strip_tags($id));
+        $stmt->bind_param('i', $id);
+
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function getConfirmedAchatsByArticleId($article_id)
+    {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE article_id = ? AND statut = 'confirme'";
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt) {
+            die("Erreur de préparation de la requête : " . $this->conn->error);
+        }
+
+        $article_id = htmlspecialchars(strip_tags($article_id));
+        $stmt->bind_param('i', $article_id);
+
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+
+    public function lireConfirmesParArticle($article_id)
+    {
+        $query = "SELECT rdv.*, p.nom AS patient_nom, p.prenom AS patient_prenom
+                  FROM " . $this->table_name . " rdv
+                  JOIN Patient p ON rdv.client_id = p.id
+                  WHERE rdv.article_id = ? AND rdv.statut = 'confirme'";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $article_id);
+        $stmt->execute();
+
+        return $stmt->get_result();
+    }
+}
+
+---- UserModel.php
+<?php
+
+require_once 'BaseModel.php';
+
+class UserModel extends BaseModel
+{
+
+    public function getUsers()
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Utilisateur");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result === false) {
+            throw new Exception("Erreur lors de l'exécution: " . $this->conn->error);
+        }
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getUserById($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Utilisateur WHERE id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    public function registerUser($username, $hashedPassword, $email)
+    {
+        $role = "Client"; // Définir le rôle par défaut
+
+        $stmt = $this->conn->prepare("INSERT INTO Utilisateur (nom, password, email, role) VALUES (?, ?, ?, ?)");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ssss", $username, $hashedPassword, $email, $role);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        return true;
+    }
+
+    public function authenticateUser($email, $password)
+    {
+        $stmt = $this->conn->prepare("SELECT id, nom, password, role FROM Utilisateur WHERE email = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("s", $email);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateById($id, $data)
+    {
+        $stmt = $this->conn->prepare("UPDATE Utilisateur SET nom=?, prenom=?, email=?, role=?, language=?, auth_provider=? WHERE id=?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ssssssi", 
+        $data['nom'], 
+        $data['prenom'], 
+        $data['email'], 
+        $data['role'], 
+        $data['language'], 
+        $data['auth_provider'], 
+        $id
+    );
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        return true;
+    }
+
+    public function deleteById($id)
+    {
+        $stmt = $this->conn->prepare("DELETE FROM Utilisateur WHERE id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $stmt->close();
+        return true;
+    }
+
+    public function getMedecinByUserId($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Article WHERE utilisateur_id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    public function getSecretaireByUserId($userId)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM Boutique WHERE utilisateur_id = ?");
+        if ($stmt === false) {
+            throw new Exception("Erreur de préparation: " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $userId);
+        if (!$stmt->execute()) {
+            throw new Exception("Erreur d'exécution: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+}
+
