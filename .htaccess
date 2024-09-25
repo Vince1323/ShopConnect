@@ -1,0 +1,12 @@
+RewriteEngine On
+RewriteBase /
+
+# Exclure certains répertoires de la réécriture d'URL
+RewriteRule ^(app|public)($|/) - [L]
+
+# Ne pas réécrire les fichiers ou dossiers existants
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Réécrire toutes les autres requêtes vers index.php
+RewriteRule ^ index.php [QSA,L]
