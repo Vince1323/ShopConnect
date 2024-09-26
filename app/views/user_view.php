@@ -3,14 +3,11 @@
 require_once 'base_view.php';
 require_once 'form_container.php';
 
-
 class UserView extends BaseView
 {
-
     /**
-     * Affichage de la page d'acceuil
+     * Affichage de la page d'accueil
      */
-
     public function renderHome()
     {
         $this->renderHeader();
@@ -34,7 +31,6 @@ class UserView extends BaseView
         // Rendu du contenu
         echo $form_container->render();
     }
-
 
     /**
      * Affiche le formulaire de connexion.
@@ -64,12 +60,12 @@ class UserView extends BaseView
     private function buildLoginForm()
     {
         $form = new FormView("index.php?action=login");
-        $form->addField('email', 'email', 'email', 'Email:');
-        $form->addField('password', 'password', 'password', 'Mot de passe:');
+        // Les champs sont vides par défaut au chargement du formulaire
+        $form->addField('email', 'email', 'email', 'Email:', '');
+        $form->addField('password', 'password', 'password', 'Mot de passe:', '');
         $form->addButton('submit', 'Se connecter');
         return $form->build();
     }
-
 
     public function displayRegistrationForm()
     {
@@ -93,10 +89,11 @@ class UserView extends BaseView
     private function buildRegistrationForm()
     {
         $form = new FormView("index.php?action=register", 'S\'inscrire');
-        $form->addField('nom', 'nom', 'text', 'Nom d\'utilisateur:')
-            ->addField('email', 'email', 'email', 'Email:')
-            ->addField('password', 'password', 'password', 'Mot de passe:')
-            ->addButton('submit', 'S\'inscrire');
+        // Les champs sont vides par défaut au chargement du formulaire
+        $form->addField('nom', 'nom', 'text', 'Nom d\'utilisateur:', '');
+        $form->addField('email', 'email', 'email', 'Email:', '');
+        $form->addField('password', 'password', 'password', 'Mot de passe:', '');
+        $form->addButton('submit', 'S\'inscrire');
         return $form->build();
     }
 

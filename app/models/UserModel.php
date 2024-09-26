@@ -40,7 +40,7 @@ class UserModel extends BaseModel
 
     public function registerUser($username, $hashedPassword, $email)
     {
-        $role = "Client"; // Définir le rôle par défaut
+        $role = "Customer"; // Définir le rôle par défaut
 
         $stmt = $this->conn->prepare("INSERT INTO Utilisateur (nom, password, email, role) VALUES (?, ?, ?, ?)");
         if ($stmt === false) {
@@ -116,7 +116,7 @@ class UserModel extends BaseModel
         return true;
     }
 
-    public function getMedecinByUserId($userId)
+    public function getArticleByUserId($userId)
     {
         $stmt = $this->conn->prepare("SELECT * FROM Article WHERE utilisateur_id = ?");
         if ($stmt === false) {

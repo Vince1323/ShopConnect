@@ -83,6 +83,7 @@ class AdminController extends BaseController
         }
     }
 
+    
     /**
      * Dashboard Article (Article)
      */
@@ -580,22 +581,22 @@ class AdminController extends BaseController
     /**
      * Fonctions Edit, update, delete (Boutique)
      */
-    public function editBoutique($id)
+    public function editBoutiques($id)
     {
         $boutique = $this->boutiqueModel->lireUn($id);
         if ($boutique) {
-            $this->adminView->renderEditBoutiqueForm($boutique);
+            $this->adminView->renderEditBoutiquesForm($boutique);
         } else {
             echo "Erreur : La boutique n'existe pas.";
         }
     }
 
-    public function updateBoutique($id, $data)
+    public function updateBoutiques($id, $data)
     {
         $success = $this->boutiqueModel->mettreAJour($id, $data);
 
         if ($success) {
-            header("Location: index.php?action=dashboardBoutique");
+            header("Location: index.php?action=dashboardBoutiques");
             exit();
         } else {
             echo "Erreur lors de la mise à jour de la boutique.";

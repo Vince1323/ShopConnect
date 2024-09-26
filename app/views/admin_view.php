@@ -280,9 +280,9 @@ class AdminView
     // Ajout du champ pour le rôle
     $form->addSelectField('role', 'role', 'Rôle:', [
         'Admin' => 'Admin',
-        'Boutique' => 'Boutique',
-        'Marketing' => 'Marketing',
-        'Client' => 'Client'
+        'Merchant' => 'Merchant',
+        'MarketingManager' => 'MarketingManager',
+        'Customer' => 'Customer'
     ], $user['role']);
     
     // Ajout du champ pour la langue
@@ -1141,50 +1141,139 @@ class AdminView
       *
       * @param array $boutiques Liste des boutiques.
       */
-    public function adminDashboardBoutiques($boutiques)
-    {
-        $this->renderHeader();
-
-        echo <<<HTML
-          <div class="container mt-5">
-              <div class="card">
-                  <div class="card-header">
-                      <ul class="nav nav-tabs card-header-tabs" id="myTabs">
-                          <li class="nav-item">
-                              <a class="nav-link active" data-toggle="tab" href="#boutiques">Boutiques</a>
-                          </li>
-                      </ul>
-                  </div>
-                  <div class="card-body">
-                      <div class="tab-content">
-                          <div class="tab-pane fade show active" id="boutiques">
+      public function adminDashboardBoutiques($boutiques)
+      {
+          $this->renderHeader();
+      
+          // Utiliser num_rows pour obtenir le nombre total de boutiques
+          if ($boutiques instanceof mysqli_result) {
+              $totalBoutiques = $boutiques->num_rows;
+          } else {
+              throw new Exception("Erreur : impossible de déterminer le nombre total de boutiques.");
+          }
+      
+          // Récupérer le nombre de boutiques par page choisi par l'utilisateur
+          $boutiquesParPage = isset($_GET['limit']) ? (int)$_GET['limit'] : 5; // Par défaut, 5 par page
+          $pageActuelle = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Par défaut, la première page
+      
+          // Calcul du nombre total de pages
+          $nombreDePages = ceil($totalBoutiques / $boutiquesParPage);
+      
+          // S'assurer que la page actuelle n'est pas en dehors des bornes
+          if ($pageActuelle < 1) {
+              $pageActuelle = 1;
+          } elseif ($pageActuelle > $nombreDePages) {
+              $pageActuelle = $nombreDePages;
+          }
+      
+          // Calcul de l'index de début pour la pagination
+          $debut = ($pageActuelle - 1) * $boutiquesParPage;
+      
+          // Log des paramètres dans les logs PHP
+          error_log("Débogage: Paramètre limit: " . $boutiquesParPage);
+          error_log("Débogage: Paramètre page: " . $pageActuelle);
+          error_log("Débogage: Nombre total de pages: " . $nombreDePages);
+          error_log("Débogage: Nombre total de boutiques: " . $totalBoutiques);
+          error_log("Débogage: Offset (début): " . $debut);
+      
+          // Récupérer les boutiques pour la page actuelle (sous forme de tableau)
+          $boutiquesPage = [];
+          if ($totalBoutiques > 0) {
+              $boutiques->data_seek($debut); // Avancer le curseur vers le bon index
+              for ($i = 0; $i < $boutiquesParPage && $row = $boutiques->fetch_assoc(); $i++) {
+                  $boutiquesPage[] = $row;
+              }
+          }
+      
+          echo <<<HTML
+              <div class="container mt-5">
+                  <div class="card">
+                      <div class="card-header">
+                          <ul class="nav nav-tabs card-header-tabs" id="myTabs">
+                              <li class="nav-item">
+                                  <a class="nav-link active" data-toggle="tab" href="#boutiques">Boutiques</a>
+                              </li>
+                          </ul>
+                      </div>
+                      <div class="card-body">
+                          <div class="tab-content">
+                              <div class="tab-pane fade show active" id="boutiques">
           HTML;
-
-        // Boutiques
-        $boutiqueColumns = ['Nom', 'Description', 'Actions'];
-        $this->renderTable("Liste des boutiques", $boutiques, function ($boutique) {
-            return [
-                htmlspecialchars($boutique['nom']),
-                htmlspecialchars($boutique['description']),
-                "<a href='index.php?action=editBoutiques&id={$boutique['id']}' class='btn btn-primary btn-sm'>Modifier</a>
-                  <form method='post' action='index.php?action=deleteBoutiques' style='display: inline;'>
-                  <input type='hidden' name='id' value='{$boutique['id']}'>
-                  <button class='btn btn-danger btn-sm' type='submit'>Supprimer</button>
-                  </form>"
-            ];
-        }, $boutiqueColumns);
-
-        echo <<<HTML
-                          </div>
-                      </div> <!-- Fin de la tab-content -->
-                  </div> <!-- Fin de la card-body -->
-              </div> <!-- Fin de la card -->
-          </div> <!-- Fin du container -->
+      
+          // Boutiques
+          $boutiqueColumns = ['Utilisateur_id','Nom', 'Description','Telephone','Adresse','Url_slug','Actions'];
+          $this->renderTable("Liste des boutiques", $boutiquesPage, function ($boutique) {
+              return [
+                  htmlspecialchars($boutique['utilisateur_id']),
+                  htmlspecialchars($boutique['nom']),
+                  htmlspecialchars($boutique['description']),
+                  htmlspecialchars($boutique['telephone']),
+                  htmlspecialchars($boutique['adresse']),
+                  htmlspecialchars($boutique['url_slug']),
+                  "<a href='index.php?action=editBoutiques&id={$boutique['id']}' class='btn btn-primary btn-sm'>Modifier</a>
+                    <form method='post' action='index.php?action=deleteBoutiques' style='display: inline;'>
+                    <input type='hidden' name='id' value='{$boutique['id']}'>
+                    <button class='btn btn-danger btn-sm' type='submit'>Supprimer</button>
+                    </form>"
+              ];
+          }, $boutiqueColumns);
+      
+          // Sélecteur pour choisir le nombre de boutiques par page
+          echo <<<HTML
+                              </div>
+                          </div> <!-- Fin de la tab-content -->
+                      </div> <!-- Fin de la card-body -->
+      
+                      <!-- Sélection du nombre de lignes par page -->
+                      <form method="get" class="form-inline">
+                          <label for="limit" class="mr-2">Afficher </label>
+                          <select name="limit" id="limit" class="form-control mr-2" onchange="this.form.submit()">
+                              <option value="5" <?php echo $boutiquesParPage == 5 ? 'selected' : ''; ?>>5</option>
+                              <option value="10" <?php echo $boutiquesParPage == 10 ? 'selected' : ''; ?>>10</option>
+                              <option value="15" <?php echo $boutiquesParPage == 15 ? 'selected' : ''; ?>>15</option>
+                          </select>
+                          <label for="limit"> lignes par page</label>
+                          <input type="hidden" name="page" value="1"> <!-- Réinitialiser la pagination à la page 1 lors du changement de nombre de lignes -->
+                      </form>
+      
+                      <!-- Pagination -->
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
           HTML;
+      
+          // Afficher les liens de pagination
+          for ($page = 1; $page <= $nombreDePages; $page++) {
+              $activeClass = ($page == $pageActuelle) ? 'active' : '';
+              echo <<<HTML
+              <li class="page-item $activeClass">
+                <a class="page-link" href="?page=$page&limit=$boutiquesParPage">$page</a>
+              </li>
+              HTML;
+          }
+      
+          // Affichage des informations dans la console du navigateur
+          echo <<<HTML
+                        </ul>
+                      </nav>
+                  </div> <!-- Fin de la card -->
+              </div> <!-- Fin du container -->
+      
+              <script>
+                  // Vérifier les paramètres limit et page dans la console du navigateur
+                  console.log("Paramètre limit:", "$boutiquesParPage");
+                  console.log("Paramètre page:", "$pageActuelle");
+                  console.log("Nombre total de pages:", "$nombreDePages");
+                  console.log("Nombre total de boutiques:", "$totalBoutiques");
+                  console.log("Offset (début):", "$debut");
+              </script>
+          HTML;
+      
+          $this->renderDataTableScript();
+      }
+      
+    
 
-        $this->renderDataTableScript();
-    }
-
+      
     public function renderEditBoutiquesForm($boutique)
     {
         $this->renderHeader();
@@ -1193,8 +1282,12 @@ class AdminView
         $form = new FormView("index.php?action=updateBoutiques&id={$boutique['id']}");
 
         // Ajout des champs au formulaire
+        $form->addField('utilisateur_id', 'utilisateur_id', 'text', 'utilisateur_id:', $boutique['utilisateur_id']);
         $form->addField('nom', 'nom', 'text', 'Nom:', $boutique['nom']);
         $form->addField('description', 'description', 'textarea', 'Description:', $boutique['description']);
+        $form->addField('telephone', 'telephone', 'text', 'elephone:', $boutique['telephone']);
+        $form->addField('adresse', 'adresse', 'text', 'adresse:', $boutique['adresse']);
+        $form->addField('url_slug', 'url_slug', 'text', 'url_slug:', $boutique['url_slug']);
 
         // Ajout des boutons au formulaire
         $form->addButton('submit', 'Valider');

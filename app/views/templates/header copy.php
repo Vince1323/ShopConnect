@@ -70,7 +70,7 @@
             text-decoration: underline;
         }
 
-        #header, #topbar, #container {
+        #header, #topbar {
             background-color: var(--header-bg-color);
             color: var(--header-text-color);
             transition: background-color 0.3s, color 0.3s;

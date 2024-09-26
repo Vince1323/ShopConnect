@@ -26,4 +26,4 @@
         });
         calendar.render();
     }
-});
+
