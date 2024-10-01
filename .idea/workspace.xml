@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a99e7888-0efb-4384-94b4-d936c98c7605" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cahier Des Charges.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Echéancier - Shop Connect.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/src/main/java/com/example/ShopConnect/ShopConnectApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/src/main/java/com/example/ShopConnect/ShopConnectApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShopConnect/src/test/java/com/example/ShopConnect/ShopConnectApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/ShopConnect/src/test/java/com/example/ShopConnect/ShopConnectApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2mqlRBt5AEn9ifbyZIyEA8yJhi9" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/wamp64/ShopConnect"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a99e7888-0efb-4384-94b4-d936c98c7605" name="Changes" comment="" />
+      <created>1727811979049</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1727811979049</updated>
+    </task>
+    <servers />
+  </component>
+</project>
