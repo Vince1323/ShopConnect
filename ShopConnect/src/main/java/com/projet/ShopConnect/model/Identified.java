@@ -1,12 +1,12 @@
 package com.projet.ShopConnect.model;
 
-        import jakarta.persistence.*;
-        import org.springframework.data.annotation.CreatedBy;
-        import org.springframework.data.annotation.CreatedDate;
-        import org.springframework.data.annotation.LastModifiedBy;
-        import org.springframework.data.annotation.LastModifiedDate;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-        import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class Identified { // Classe d'héritage pour toutes les tables de la DB

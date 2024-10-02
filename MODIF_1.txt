@@ -1,0 +1,105 @@
+📌 UTILISATEUR : 
+➖ avant : 
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` ENUM('Admin','Medecin','Secretaire') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+
+➖ après:
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(255) NOT NULL,
+  `prenom` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` ENUM('Admin','Merchant','Customer','MarketingManager') NOT NULL,
+  `language` ENUM('fr','en') DEFAULT 'fr',
+  `auth_provider` ENUM('email','facebook','google') DEFAULT 'email',
+  `date_inscription` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+📌 DE SERVICE EN BOUTIQUE
+-- Table `boutique`
+CREATE TABLE IF NOT EXISTS `boutique` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `proprietaire_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `proprietaire_id` (`proprietaire_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table `commande`
+CREATE TABLE IF NOT EXISTS `commande` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `statut_paiement` enum('paye','impaye') DEFAULT 'impaye',
+  `date_commande` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table `produit`
+CREATE TABLE IF NOT EXISTS `produit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `boutique_id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `prix` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `boutique_id` (`boutique_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table `produit_commande`
+CREATE TABLE IF NOT EXISTS `produit_commande` (
+  `commande_id` int(11) NOT NULL,
+  `produit_id` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  PRIMARY KEY (`commande_id`, `produit_id`),
+  KEY `produit_id` (`produit_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table `promotion`
+CREATE TABLE IF NOT EXISTS `promotion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `produit_id` int(11) NOT NULL,
+  `reduction` decimal(5,2) NOT NULL COMMENT 'Réduction en pourcentage',
+  `date_debut` datetime NOT NULL,
+  `date_fin` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `produit_id` (`produit_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table `utilisateur`
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('Admin','Proprietaire','Client') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Table `facture`
+CREATE TABLE IF NOT EXISTS `facture` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `commande_id` int(11) DEFAULT NULL,
+  `montant` decimal(10,2) DEFAULT NULL,
+  `statut_paiement` enum('paye','impaye') DEFAULT 'impaye',
+  `date_facture` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `commande_id` (`commande_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
