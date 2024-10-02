@@ -1,4 +1,4 @@
-package com.example.ShopConnect;
+package com.projet.ShopConnect;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

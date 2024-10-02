@@ -1,4 +1,4 @@
-package com.example.ShopConnect;
+package com.projet.ShopConnect;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
