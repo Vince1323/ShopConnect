@@ -1,0 +1,16 @@
+spring:
+  datasource:
+  url: 'jdbc:postgresql://localhost:5432/ShopConnect' #Chemin de la db
+  username: postgres
+  password: Vinyjeff
+  jpa:
+  hibernate:
+  ddl-auto: update
+  properties:
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+  format_sql: true
+  show-sql: true
+  server:
+  port: '9292'
+  servlet:
+  context-path: /api
