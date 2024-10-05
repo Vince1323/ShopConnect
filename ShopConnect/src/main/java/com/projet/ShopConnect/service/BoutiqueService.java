@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BoutiqueService {
@@ -38,6 +37,7 @@ public class BoutiqueService {
     public Boutique updateBoutique(Long id, Boutique updatedBoutique) {
         return boutiqueRepository.findById(id)
                 .map(boutique -> {
+                    // Mise à jour des champs de la boutique
                     boutique.setNom(updatedBoutique.getNom());
                     boutique.setDescription(updatedBoutique.getDescription());
                     boutique.setAdresse(updatedBoutique.getAdresse());
