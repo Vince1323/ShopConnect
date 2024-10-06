@@ -1,6 +1,13 @@
+issuer-uri: http://localhost:8080/auth/realms/ShopConnectRealm
+
+server:
+  port: '9292'
+  servlet:
+    context-path: /api
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ShopConnect # Chemin de la db
+    url: jdbc:postgresql://localhost:5432/ShopConnect  # Chemin de la db
     username: postgres
     password: Vinyjeff
     driver-class-name: org.postgresql.Driver
@@ -12,8 +19,17 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         show_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/auth/realms/ShopConnectRealm  # URL de l'issuer pour JWT
 
-server:
-  port: '9292'
-  servlet:
-    context-path: /api
+keycloak:
+  auth-server-url: http://localhost:8180/auth  # URL de ton serveur Keycloak
+  realm: ShopConnectRealm                      # Nom du realm configuré dans Keycloak
+  resource: shop-connect-client                # Nom du client Keycloak
+  public-client: true                          # Le client est public dans Keycloak
+  ssl-required: external                       # SSL seulement requis en externe
+  confidential-port: 0                         # Pas de port confidentiel
+  principal-attribute: preferred_username      # Attribut pour l'utilisateur principal
