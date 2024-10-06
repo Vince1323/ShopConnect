@@ -45,7 +45,7 @@ public class ShopConnectApplication implements WebMvcConfigurer {
 		registry.addInterceptor(localeChangeInterceptor()); // Enregistrement de l'intercepteur pour i18n
 	}
 
-	// Configuration "Keycloak" -> pour la gestion des utilisateurs !! DEPENDENCE.
+	// Configuration "Keycloak" -> pour la gestion des utilisateurs
 	@Bean
 	public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
 		return new KeycloakSpringBootConfigResolver();
