@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
     HashLocationStrategy,
     LocationStrategy,
@@ -18,25 +18,19 @@ import { DialogModule } from 'primeng/dialog'; // Import du module Dialog de Pri
 import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import du module ConfirmDialog de PrimeNG
 import { ConfirmationService } from 'primeng/api'; // Service de confirmation
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent, // Seul AppComponent est déclaré ici
     ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,  // Pour faire fonctionner les appels HTTP
-        FormsModule,  // Pour supporter les formulaires
+    bootstrap: [AppComponent], imports: [BrowserModule, // Pour faire fonctionner les appels HTTP
+        FormsModule, // Pour supporter les formulaires
         AppRoutingModule,
         AppLayoutModule,
-        ButtonModule,  // Pour utiliser les boutons de PrimeNG
-        TableModule,   // Pour utiliser les tableaux de PrimeNG
-        DialogModule,  // Pour utiliser les dialogues de PrimeNG
-        ConfirmDialogModule, // Pour utiliser les confirmations de PrimeNG
-    ],
-    providers: [
+        ButtonModule, // Pour utiliser les boutons de PrimeNG
+        TableModule, // Pour utiliser les tableaux de PrimeNG
+        DialogModule, // Pour utiliser les dialogues de PrimeNG
+        ConfirmDialogModule], providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        ConfirmationService,  // Fournir le service de confirmation
-    ],
-    bootstrap: [AppComponent],
-})
+        ConfirmationService,
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
