@@ -9,7 +9,7 @@ import { Utilisateur } from '../model/Utilisateur';
 })
 export class UtilisateurService {
   private readonly API_URL = 'http://localhost:9292/api';
-  private readonly ENDPOINT_UTILISATEUR = '/api/utilisateurs';
+  private readonly ENDPOINT_UTILISATEUR = '/utilisateurs';
 
   constructor(private httpClient: HttpClient) {}
 
