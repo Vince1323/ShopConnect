@@ -1,0 +1,75 @@
+<div class="header-container">
+    <h3>Produits
+        <p-button icon="pi pi-plus" class="p-button-info" (click)="newProduit()"></p-button>
+    </h3>
+</div>
+
+<p-dialog header="{{ new.id ? 'Modifier Produit' : 'Créer un nouveau Produit' }}" [modal]="true" [(visible)]="show" [style]="{ width: '80rem' }">
+    <form #produitForm="ngForm">
+        <div class="p-text-secondary block mb-5">
+            <h3>{{ new.id ? 'Modifier Produit' : 'Créer un nouveau Produit' }}</h3>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="nom" class="font-semibold w-6rem">Nom</label>
+            <input pInputText id="nom" class="flex-auto" autocomplete="off" [(ngModel)]="new.nom" name="nom" required />
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="prix" class="font-semibold w-6rem">Prix</label>
+            <input pInputText id="prix" class="flex-auto" autocomplete="off" [(ngModel)]="new.prix" name="prix" required />
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Retour" severity="secondary" (click)="show = false"></p-button>
+            <p-button label="Sauver" (click)="sauver()" [disabled]="!produitForm.valid"></p-button>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Détails du Produit" [(visible)]="viewDetailsVisible" [modal]="true" [style]="{width: '80rem'}">
+    <div *ngIf="selectedProduit">
+        <div>
+            <h5>Nom : {{ selectedProduit.nom }} </h5>
+        </div>
+        <div>
+            <h5>Prix: {{ selectedProduit.prix }}</h5>
+        </div>
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Fermer" (click)="viewDetailsVisible = false"></p-button>
+    </div>
+</p-dialog>
+
+<p-table [value]="produits" [paginator]="true" [rows]="10" [responsive]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="nom" style="width:20%">
+                Nom <p-sortIcon field="nom" />
+            </th>
+            <th pSortableColumn="prix" style="width:20%">
+                Prix <p-sortIcon field="prix" />
+            </th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <th>
+                <p-columnFilter type="text" field="nom" [showClearButton]="false" />
+            </th>
+            <th>
+                <p-columnFilter type="text" field="prix" [showClearButton]="false" />
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-produit>
+        <tr>
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.prix }}</td>
+            <td>
+                <p-button icon="pi pi-pencil" class="p-button-success" (click)="editProduit(produit)"></p-button>
+                <p-button icon="pi pi-trash" class="p-button-danger" (click)="confirmDeleteProduit(produit)"></p-button>
+                <p-button icon="pi pi-eye" class="p-button-info" (click)="viewDetailsProduit(produit)"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

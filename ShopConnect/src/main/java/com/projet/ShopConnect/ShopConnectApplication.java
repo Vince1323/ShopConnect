@@ -1,6 +1,6 @@
 package com.projet.ShopConnect;
 
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+//import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,13 +12,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.stripe.Stripe;
 
 import java.util.Locale;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
 
 @SpringBootApplication
 public class ShopConnectApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		// Configuration Stripe API pour les paiements
-		Stripe.apiKey = "pk_test_51Q6L4HFkmPyq3F8X7q8PW3StR2JOF9yAsHNbUBsUsVuq76RSVfepf5L58mi2h0j1cIgIhthVKgjssPbDom8yZ8J300FZJedwsM"; // Remplacer par votre clé API Stripe
+		Stripe.apiKey = "pk_test_51Q6L4HFkmPyq3F8X7q8PW3StR2JOF9yAsHNbUBsUsVuq76RSVfepf5L58mi2h0j1cIgIhthVKgjssPbDom8yZ8J300FZJedwsM";
 
 		// Démarrage de l'application
 		SpringApplication.run(ShopConnectApplication.class, args);
@@ -28,27 +30,39 @@ public class ShopConnectApplication implements WebMvcConfigurer {
 	@Bean
 	public LocaleResolver localeResolver() {
 		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
-		localeResolver.setDefaultLocale(Locale.FRENCH); // Par défaut, le site sera en français
-		return localeResolver; // Plus besoin de cast, AcceptHeaderLocaleResolver implémente LocaleResolver
+		localeResolver.setDefaultLocale(Locale.FRENCH);
+		return localeResolver;
 	}
 
 	// Intercepteur pour changer la langue via un paramètre dans l'URL (ex : ?lang=en)
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-		interceptor.setParamName("lang"); // Paramètre URL pour changer la langue (ex. ?lang=en)
+		interceptor.setParamName("lang");
 		return interceptor;
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(localeChangeInterceptor()); // Enregistrement de l'intercepteur pour i18n
+		registry.addInterceptor(localeChangeInterceptor());
 	}
+
+	// Configuration globale de CORS
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**")  // Autoriser toutes les routes
+				.allowedOrigins("http://localhost:4200")  // Autoriser les requêtes depuis ton frontend Angular
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Méthodes autorisées
+				.allowedHeaders("*")  // Autoriser tous les headers
+				.allowCredentials(true);  // Autoriser les cookies et les credentials
+	}
+}
+
 
 	// Configuration "Keycloak" -> pour la gestion des utilisateurs !! DEPENDENCE.
-	@Bean
-	public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
-		return new KeycloakSpringBootConfigResolver();
-	}
+	//@Bean
+	//public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
+	//	return new KeycloakSpringBootConfigResolver();
+	//}
 
-}
+

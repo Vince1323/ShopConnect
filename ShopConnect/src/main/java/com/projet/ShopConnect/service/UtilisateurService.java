@@ -3,9 +3,10 @@ package com.projet.ShopConnect.service;
 import com.projet.ShopConnect.model.Utilisateur;
 import com.projet.ShopConnect.repository.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,9 +15,9 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    // Récupérer tous les utilisateurs
-    public List<Utilisateur> getAllUtilisateurs() {
-        return utilisateurRepository.findAll();
+    // Récupérer tous les utilisateurs avec pagination
+    public Page<Utilisateur> getAllUtilisateurs(Pageable pageable) {
+        return utilisateurRepository.findAll(pageable);
     }
 
     // Récupérer un utilisateur par ID
@@ -26,11 +27,6 @@ public class UtilisateurService {
 
     // Sauvegarder un nouvel utilisateur
     public Utilisateur saveUtilisateur(Utilisateur utilisateur) {
-        // Ici on peut vérifier si l'email est déjà utilisé
-        Optional<Utilisateur> existingUser = Optional.ofNullable(utilisateurRepository.findByEmail(utilisateur.getEmail()));
-        if (existingUser.isPresent()) {
-            throw new RuntimeException("Email déjà utilisé");
-        }
         return utilisateurRepository.save(utilisateur);
     }
 
@@ -44,13 +40,13 @@ public class UtilisateurService {
                     utilisateur.setRole(updatedUtilisateur.getRole());
                     utilisateur.setLangage(updatedUtilisateur.getLangage());
                     return utilisateurRepository.save(utilisateur);
-                }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé")); // Gérer le cas où l'utilisateur n'existe pas
+                }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
 
     // Supprimer un utilisateur par son ID
     public void deleteUtilisateur(Long id) {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé")); // Gérer le cas où l'utilisateur n'existe pas
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         utilisateurRepository.delete(utilisateur);
     }
 }

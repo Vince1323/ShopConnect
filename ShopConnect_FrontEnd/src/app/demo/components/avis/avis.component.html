@@ -1,0 +1,78 @@
+<div class="header-container">
+    <h3>Avis
+        <p-button icon="pi pi-plus" class="p-button-info" (click)="newAvis()"></p-button>
+    </h3>
+</div>
+
+<!-- Dialog pour créer ou modifier un avis -->
+<p-dialog header="{{ new.id ? 'Modifier Avis' : 'Créer un nouvel Avis' }}" [modal]="true" [(visible)]="show" [style]="{ width: '80rem' }">
+    <form #avisForm="ngForm">
+        <div class="p-text-secondary block mb-5">
+            <h3>{{ new.id ? 'Modifier Avis' : 'Créer un nouvel Avis' }}</h3>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="commentaire" class="font-semibold w-6rem">Commentaire</label>
+            <input pInputText id="commentaire" class="flex-auto" autocomplete="off" [(ngModel)]="new.commentaire" name="commentaire" required />
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="note" class="font-semibold w-6rem">Note</label>
+            <input pInputText id="note" class="flex-auto" autocomplete="off" [(ngModel)]="new.note" name="note" required />
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Retour" severity="secondary" (click)="show = false"></p-button>
+            <p-button label="Sauver" (click)="sauver()" [disabled]="!avisForm.valid"></p-button>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Dialog pour afficher les détails d'un avis -->
+<p-dialog header="Détails de l'Avis" [(visible)]="viewDetailsVisible" [modal]="true" [style]="{ width: '80rem' }">
+    <div *ngIf="selectedAvis">
+        <div>
+            <h5>Commentaire : {{ selectedAvis.commentaire }} </h5>
+        </div>
+        <div>
+            <h5>Note: {{ selectedAvis.note }}</h5>
+        </div>
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Fermer" (click)="viewDetailsVisible = false"></p-button>
+    </div>
+</p-dialog>
+
+<!-- Tableau pour afficher les avis avec pagination et filtrage -->
+<p-table [value]="avis" [paginator]="true" [rows]="10" [responsive]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="commentaire" style="width:50%">
+                Commentaire <p-sortIcon field="commentaire" />
+            </th>
+            <th pSortableColumn="note" style="width:20%">
+                Note <p-sortIcon field="note" />
+            </th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <th>
+                <p-columnFilter type="text" field="commentaire" [showClearButton]="false" />
+            </th>
+            <th>
+                <p-columnFilter type="text" field="note" [showClearButton]="false" />
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-avis>
+        <tr>
+            <td>{{ avis.commentaire }}</td>
+            <td>{{ avis.note }}</td>
+            <td>
+                <p-button icon="pi pi-pencil" class="p-button-success" (click)="editAvis(avis)"></p-button>
+                <p-button icon="pi pi-trash" class="p-button-danger" (click)="confirmDeleteAvis(avis)"></p-button>
+                <p-button icon="pi pi-eye" class="p-button-info" (click)="viewDetailsAvis(avis)"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
