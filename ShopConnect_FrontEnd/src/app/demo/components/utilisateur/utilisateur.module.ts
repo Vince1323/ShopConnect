@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';  // Ajout de DialogModule
+import { DialogModule } from 'primeng/dialog';  
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { UtilisateurComponent } from './utilisateur.component';
 import { UtilisateursRoutingModule } from './utilisateur-routing.module';

@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux paniers
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/paniers"
-@RequestMapping("/api/paniers")
+@RequestMapping("/paniers")
 public class PanierController {
 
     // Injection automatique du service PanierService pour gérer la logique métier

@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux promotions
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/promotions"
-@RequestMapping("/api/promotions")
+@RequestMapping("/promotions")
 public class PromotionController {
 
     // Injection automatique du service PromotionService pour gérer la logique métier

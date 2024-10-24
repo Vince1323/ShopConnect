@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux produits
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/produits"
-@RequestMapping("/api/produits")
+@RequestMapping("/produits")
 public class ProduitController {
 
     // Injection automatique du service ProduitService pour gérer la logique métier

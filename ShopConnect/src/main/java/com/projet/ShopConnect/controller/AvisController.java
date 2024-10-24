@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux avis
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/avis"
-@RequestMapping("/api/avis")
+@RequestMapping("/avis")
 public class AvisController {
 
     // Injection automatique du service AvisService pour gérer la logique métier

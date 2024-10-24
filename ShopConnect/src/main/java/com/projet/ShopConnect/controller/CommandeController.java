@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux commandes
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/commandes"
-@RequestMapping("/api/commandes")
+@RequestMapping("/commandes")
 public class CommandeController {
 
     // Injection automatique du service CommandeService pour gérer la logique métier

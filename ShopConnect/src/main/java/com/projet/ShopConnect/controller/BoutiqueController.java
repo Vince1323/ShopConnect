@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux boutiques
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/boutiques"
-@RequestMapping("/api/boutiques")
+@RequestMapping("/boutiques")
 public class BoutiqueController {
 
     // Injection automatique du service BoutiqueService pour gérer la logique métier

@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux paiements
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/paiements"
-@RequestMapping("/api/paiements")
+@RequestMapping("/paiements")
 public class PaiementController {
 
     // Injection automatique du service PaiementService pour gérer la logique métier

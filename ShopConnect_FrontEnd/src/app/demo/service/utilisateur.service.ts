@@ -44,3 +44,4 @@ export class UtilisateurService {
     return throwError(() => new Error('Server communication error'));
   }
 }
+

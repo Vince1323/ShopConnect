@@ -12,7 +12,7 @@ import java.util.List;
 // Contrôleur Spring REST gérant les requêtes HTTP liées aux catégories
 @RestController
 // Toutes les requêtes à ce contrôleur commenceront par "/api/categories"
-@RequestMapping("/api/categories")
+@RequestMapping("/categories")
 public class CategorieController {
 
     // Injection automatique du service CategorieService pour gérer la logique métier
