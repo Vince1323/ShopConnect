@@ -22,7 +22,7 @@ public class Commande extends Identified {
     @ManyToOne
     private Utilisateur utilisateur;
 
-    @OneToMany(mappedBy = "commande")
+    @OneToMany(mappedBy = "commande" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommandeProduit> produits;
 
     @OneToOne(mappedBy = "commande")

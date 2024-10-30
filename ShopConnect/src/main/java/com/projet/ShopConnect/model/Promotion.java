@@ -26,6 +26,6 @@ public class Promotion extends Identified {
     @ManyToOne
     private Utilisateur utilisateur;
 
-    @OneToMany(mappedBy = "promotion")
+    @OneToMany(mappedBy = "promotion" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionProduit> produits;
 }

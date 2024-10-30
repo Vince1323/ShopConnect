@@ -29,13 +29,13 @@ public class Produit extends Identified {
     @ManyToOne
     private Categorie categorie;
 
-    @OneToMany(mappedBy = "produit")
+    @OneToMany(mappedBy = "produit" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PromotionProduit> promotions;
 
-    @OneToMany(mappedBy = "produit")
+    @OneToMany(mappedBy = "produit" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommandeProduit> commandes;
 
-    @OneToMany(mappedBy = "produit")
+    @OneToMany(mappedBy = "produit" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PanierProduit> paniers;
 
     @OneToMany(mappedBy = "produit")

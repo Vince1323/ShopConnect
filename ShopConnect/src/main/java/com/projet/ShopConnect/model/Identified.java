@@ -12,7 +12,12 @@ import java.time.LocalDateTime;
 public abstract class Identified { // Classe d'héritage pour toutes les tables de la DB
     @Id // Fait comprendre à SPRING que c'est une PrimaryKey
     @GeneratedValue(strategy = GenerationType.IDENTITY) // pour l'auto-incrémentation
-    private Long id; // Id PK
+
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
     private boolean deleted;
 
     /*  GESTION DES LOGGS  */

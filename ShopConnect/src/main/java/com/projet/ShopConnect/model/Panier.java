@@ -16,6 +16,6 @@ public class Panier extends Identified {
     @ManyToOne
     private Utilisateur utilisateur;
 
-    @OneToMany(mappedBy = "panier")
+    @OneToMany(mappedBy = "panier" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PanierProduit> produits;
 }

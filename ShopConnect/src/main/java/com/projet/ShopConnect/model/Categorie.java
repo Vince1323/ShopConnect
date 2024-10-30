@@ -14,6 +14,6 @@ public class Categorie extends Identified {
     private String nom;
     private String description;
 
-    @OneToMany(mappedBy = "categorie")
+    @OneToMany(mappedBy = "categorie" , fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Produit> produits;
 }
