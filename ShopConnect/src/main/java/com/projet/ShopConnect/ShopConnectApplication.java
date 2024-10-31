@@ -1,32 +1,33 @@
 package com.projet.ShopConnect;
 
-//import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import com.stripe.Stripe;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import com.stripe.Stripe;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Locale;
-
 
 @SpringBootApplication
 public class ShopConnectApplication implements WebMvcConfigurer {
 
-	public static void main(String[] args) {
-		// Configuration Stripe API pour les paiements
-		Stripe.apiKey = "pk_test_51Q6L4HFkmPyq3F8X7q8PW3StR2JOF9yAsHNbUBsUsVuq76RSVfepf5L58mi2h0j1cIgIhthVKgjssPbDom8yZ8J300FZJedwsM";
+	// Clé Stripe importée depuis application.properties
+	@Value("${stripe.apiKey}")
+	private static String stripeApiKey;
 
-		// Démarrage de l'application
+	public static void main(String[] args) {
+		// Initialisation de la clé Stripe pour les transactions
+		Stripe.apiKey = stripeApiKey;
 		SpringApplication.run(ShopConnectApplication.class, args);
 	}
 
-	// Configuration de l'internationalisation (choix de la langue)
+	// Définition du résolveur de langue par défaut
 	@Bean
 	public LocaleResolver localeResolver() {
 		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
@@ -34,7 +35,7 @@ public class ShopConnectApplication implements WebMvcConfigurer {
 		return localeResolver;
 	}
 
-	// Intercepteur pour changer la langue via un paramètre dans l'URL (ex : ?lang=en)
+	// Intercepteur pour changer la langue via l'URL (ex : ?lang=en)
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
@@ -47,22 +48,13 @@ public class ShopConnectApplication implements WebMvcConfigurer {
 		registry.addInterceptor(localeChangeInterceptor());
 	}
 
-	// Configuration globale de CORS
+	// Configuration CORS pour autoriser les requêtes depuis le frontend Angular
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")  // Autoriser toutes les routes
-				.allowedOrigins("http://localhost:4200")  // Autoriser les requêtes depuis ton frontend Angular
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Méthodes autorisées
-				.allowedHeaders("*")  // Autoriser tous les headers
-				.allowCredentials(true);  // Autoriser les cookies et les credentials
+		registry.addMapping("/**")
+				.allowedOrigins("http://localhost:4200")
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+				.allowedHeaders("*")
+				.allowCredentials(true);
 	}
 }
-
-
-	// Configuration "Keycloak" -> pour la gestion des utilisateurs !! DEPENDENCE.
-	//@Bean
-	//public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
-	//	return new KeycloakSpringBootConfigResolver();
-	//}
-
-

@@ -1,6 +1,8 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/ShopConnect # Chemin de la db
+    url: jdbc:postgresql://localhost:5432/ShopConnect # Chemin de la base de données
     username: postgres
     password: Vinyjeff
     driver-class-name: org.postgresql.Driver
@@ -17,3 +19,15 @@ server:
   port: '9292'
   servlet:
     context-path: /api
+
+# Configuration Stripe pour les paiements
+stripe:
+  apiKey: "sk_test_51Q6L4HFkmPyq3F8XJE1Ca6z1d9Ia8iBgiouz6wXu9vKSWwQNqSFtAxuBX66LcU0rR1BZ3F0WjbxTEj21W9e3ysfJ00srS89fEq"
+
+# Configuration JWT pour la gestion des utilisateurs
+jwt:
+  secretKey: "Q1JkN1l6Rm5PZ3dVb0VzX2U0eUotWkdLUkdsVWh0MWU="
+
+# Configuration de l'internationalisation
+locale:
+  default: fr  # Langue par défaut (fr pour français, en pour anglais)
