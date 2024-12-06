@@ -8,6 +8,9 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { UtilisateurComponent } from './utilisateur.component';
 import { UtilisateursRoutingModule } from './utilisateur-routing.module';
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast'; // Import de ToastModule
+import { ConfirmationService, MessageService } from 'primeng/api'; // Import de MessageService pour les notifications
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [UtilisateurComponent],
@@ -19,7 +22,11 @@ import { InputTextModule } from 'primeng/inputtext';
     DialogModule,  
     FloatLabelModule,
     UtilisateursRoutingModule,
-    InputTextModule
+    InputTextModule,
+    ConfirmDialogModule,
+    ToastModule, 
   ],
+  providers: [ConfirmationService, MessageService], 
+  exports: [UtilisateurComponent]
 })
 export class UtilisateurModule { }

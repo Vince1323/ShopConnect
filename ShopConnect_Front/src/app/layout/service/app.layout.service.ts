@@ -8,6 +8,7 @@ export interface AppConfig {
     ripple: boolean;
     menuMode: string;
     scale: number;
+    socialIconColor?: string;
 }
 
 interface LayoutState {
@@ -30,6 +31,7 @@ export class LayoutService {
         colorScheme: 'light',
         theme: 'lara-light-indigo',
         scale: 14,
+        
     };
 
     config = signal<AppConfig>(this._config);

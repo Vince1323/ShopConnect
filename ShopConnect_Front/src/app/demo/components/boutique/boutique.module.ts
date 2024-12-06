@@ -8,7 +8,8 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
     declarations: [BoutiqueComponent],
@@ -21,8 +22,9 @@ import { ConfirmationService } from 'primeng/api';
         DialogModule,
         InputTextModule,
         ConfirmDialogModule,
+        ToastModule,
     ],
-    providers: [ConfirmationService],
+    providers: [ConfirmationService, MessageService],
     exports: [BoutiqueComponent]
 })
 export class BoutiqueModule { }

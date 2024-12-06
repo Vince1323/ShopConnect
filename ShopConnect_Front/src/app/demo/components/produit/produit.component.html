@@ -1,3 +1,5 @@
+<p-toast></p-toast> <!-- Composant pour afficher les notifications -->
+
 <!-- Entête avec bouton pour ajouter un nouveau produit -->
 <div class="header-container">
     <h3>Produits
@@ -56,7 +58,7 @@
 </p-dialog>
 
 <!-- Dialogue pour les détails d'un produit -->
-<p-dialog header="Détails du Produit" [(visible)]="viewDetailsVisible" [modal]="true" [style]="{width: '40rem'}">
+<p-dialog header="ℹ️ Détails du Produit" [(visible)]="viewDetailsVisible" [modal]="true" [style]="{width: '40rem'}">
     <div *ngIf="selectedProduit">
         <div class="flex align-items-center gap-3 mb-3">
             <label>Nom : {{ selectedProduit.nom }}</label>

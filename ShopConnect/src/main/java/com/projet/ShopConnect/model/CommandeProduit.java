@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 public class CommandeProduit extends Identified {
 
     private Integer quantite;
+
+    @Column(nullable = false)
     private BigDecimal prixUnitaire;
 
     @ManyToOne

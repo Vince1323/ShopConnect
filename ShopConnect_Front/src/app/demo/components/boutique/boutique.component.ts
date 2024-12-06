@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BoutiqueService } from '../../service/boutique.service';
 import { Boutique } from '../../model/Boutique';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-boutique',
   templateUrl: './boutique.component.html',
-  styleUrls: ['./boutique.component.scss']
+  styleUrls: ['./boutique.component.scss'],
+  providers: [MessageService]
 })
 export class BoutiqueComponent implements OnInit {
   boutiques: Boutique[] = [];
@@ -15,7 +17,7 @@ export class BoutiqueComponent implements OnInit {
   showEditDialog = false;
   viewDetailsVisible = false;
 
-  constructor(private boutiqueService: BoutiqueService) { }
+  constructor(private boutiqueService: BoutiqueService, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.loadBoutiques();
@@ -28,6 +30,7 @@ export class BoutiqueComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur lors du chargement des boutiques', err);
+        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec du chargement des boutiques' });
       }
     });
   }
@@ -48,9 +51,11 @@ export class BoutiqueComponent implements OnInit {
         next: () => {
           this.loadBoutiques();
           this.showEditDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Boutique mise à jour avec succès' });
         },
         error: (err) => {
           console.error('Erreur lors de la mise à jour de la boutique', err);
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la mise à jour de la boutique' });
         }
       });
     } else {
@@ -58,9 +63,11 @@ export class BoutiqueComponent implements OnInit {
         next: () => {
           this.loadBoutiques();
           this.showCreateDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Boutique créée avec succès' });
         },
         error: (err) => {
           console.error('Erreur lors de la création de la boutique', err);
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la création de la boutique' });
         }
       });
     }
@@ -76,9 +83,11 @@ export class BoutiqueComponent implements OnInit {
       this.boutiqueService.deleteBoutique(boutique.id).subscribe({
         next: () => {
           this.loadBoutiques();
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Boutique supprimée avec succès' });
         },
         error: (err) => {
           console.error('Erreur lors de la suppression de la boutique', err);
+          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la suppression de la boutique' });
         }
       });
     }

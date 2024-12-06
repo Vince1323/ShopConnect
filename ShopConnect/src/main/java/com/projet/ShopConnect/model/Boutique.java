@@ -22,7 +22,7 @@ public class Boutique extends Identified {
     private String telephone;
 
     @ManyToOne
-    private Utilisateur utilisateur;
+    private User utilisateur;
 
     @OneToMany(mappedBy = "boutique")
     private List<BoutiqueProduit> produits;

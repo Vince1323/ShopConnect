@@ -15,7 +15,7 @@ public class Avis extends Identified {
 
     // Relation ManyToOne vers Utilisateur : Plusieurs avis peuvent être donnés par un utilisateur
     @ManyToOne
-    private Utilisateur utilisateur;
+    private User utilisateur;
 
     // Relation ManyToOne vers Produit : Plusieurs avis peuvent être associés à un produit
     @ManyToOne

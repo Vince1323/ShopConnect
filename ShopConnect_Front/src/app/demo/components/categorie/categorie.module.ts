@@ -8,21 +8,23 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
-    declarations: [CategorieComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        ButtonModule,
-        CategorieRoutingModule,
-        TableModule,
-        DialogModule,
-        InputTextModule,
-        ConfirmDialogModule,
-    ],
-    providers: [ConfirmationService],
-    exports: [CategorieComponent]
+  declarations: [CategorieComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    CategorieRoutingModule,
+    TableModule,
+    DialogModule,
+    InputTextModule,
+    ConfirmDialogModule,
+    ToastModule
+  ],
+  providers: [ConfirmationService, MessageService],
+  exports: [CategorieComponent]
 })
 export class CategorieModule { }

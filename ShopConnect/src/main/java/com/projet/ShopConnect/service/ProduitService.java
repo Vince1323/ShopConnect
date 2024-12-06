@@ -45,6 +45,10 @@ public class ProduitService {
 
     // Supprimer un produit par son ID
     public void deleteProduit(Long id) {
+        if (!produitRepository.existsById(id)) {
+            throw new RuntimeException("Le produit avec l'ID " + id + " n'existe pas.");
+        }
         produitRepository.deleteById(id);
     }
+
 }

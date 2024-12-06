@@ -34,7 +34,7 @@ public class ShopConnectApplication implements WebMvcConfigurer {
 		return localeResolver;
 	}
 
-	// Intercepteur pour changer la langue via un paramètre dans l'URL (ex : ?lang=en)
+	// Intercepteur pour changer la langue via un paramètre dans l'URL
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();

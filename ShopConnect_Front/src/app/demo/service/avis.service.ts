@@ -13,7 +13,6 @@ export class AvisService {
 
   constructor(private httpClient: HttpClient) {}
 
-  // POST: Ajouter un nouvel avis
   insertAvis(avis: Avis): Observable<Avis> {
     return this.httpClient.post<Avis>(
       `${this.API_URL}${this.ENDPOINT_AVIS}`,
@@ -21,31 +20,29 @@ export class AvisService {
     ).pipe(catchError(this.handleError));
   }
 
-  // GET: Récupérer tous les avis
   getAllAvis(): Observable<Avis[]> {
     return this.httpClient.get<Avis[]>(
-      `${this.API_URL}${this.ENDPOINT_AVIS}/all`
+      `${this.API_URL}${this.ENDPOINT_AVIS}`
     ).pipe(catchError(this.handleError));
   }
 
-  // PUT: Mettre à jour un avis existant
-  updateAvis(id: number, avisModifie: Avis): Observable<Avis> {
+  updateAvis(id: number, avis: Avis): Observable<Avis> {
     return this.httpClient.put<Avis>(
       `${this.API_URL}${this.ENDPOINT_AVIS}/${id}`,
-      avisModifie
+      avis
     ).pipe(catchError(this.handleError));
   }
 
-  // DELETE: Supprimer un avis
   deleteAvis(id: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      `${this.API_URL}${this.ENDPOINT_AVIS}/${id}`
-    ).pipe(catchError(this.handleError));
+    const url = `${this.API_URL}${this.ENDPOINT_AVIS}/${id}`;
+    console.log('Suppression de l\'avis avec URL :', url); // Vérifie l'URL construite
+    return this.httpClient.delete<void>(url).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  // Handler pour les erreurs
   private handleError(error: HttpErrorResponse) {
-    console.error('Erreur de la requête HTTP', error.message);
-    return throwError(() => new Error('Une erreur s\'est produite lors de la communication avec le serveur; veuillez réessayer plus tard.'));
+    console.error('Erreur HTTP :', error.message);
+    return throwError(() => new Error('Erreur lors de la communication avec le serveur.'));
   }
 }
