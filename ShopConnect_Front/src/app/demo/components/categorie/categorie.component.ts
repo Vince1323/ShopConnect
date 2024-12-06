@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-categorie',
   templateUrl: './categorie.component.html',
   styleUrls: ['./categorie.component.scss'],
+  standalone: true,
   providers: [MessageService]
 })
 export class CategorieComponent implements OnInit {

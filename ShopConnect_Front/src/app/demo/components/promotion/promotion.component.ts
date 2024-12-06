@@ -7,6 +7,7 @@ import { ConfirmationService } from 'primeng/api';
   selector: 'app-promotion',
   templateUrl: './promotion.component.html',
   styleUrls: ['./promotion.component.scss'],
+  standalone: true,
   providers: [ConfirmationService]
 })
 export class PromotionComponent implements OnInit {

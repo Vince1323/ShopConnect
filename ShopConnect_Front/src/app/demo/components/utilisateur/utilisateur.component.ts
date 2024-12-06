@@ -8,6 +8,7 @@ import * as bcrypt from 'bcryptjs';
   selector: 'app-utilisateur',
   templateUrl: './utilisateur.component.html',
   styleUrls: ['./utilisateur.component.scss'],
+  standalone: true,
   providers: [MessageService] // Fournit MessageService au composant
 })
 export class UtilisateurComponent implements OnInit {

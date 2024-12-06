@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-avis',
   templateUrl: './avis.component.html',
   styleUrls: ['./avis.component.scss'],
+  standalone: true,
   providers: [MessageService]
 })
 export class AvisComponent implements OnInit {

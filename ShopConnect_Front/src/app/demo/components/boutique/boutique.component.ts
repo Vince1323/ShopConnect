@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-boutique',
   templateUrl: './boutique.component.html',
   styleUrls: ['./boutique.component.scss'],
+  standalone: true,
   providers: [MessageService]
 })
 export class BoutiqueComponent implements OnInit {

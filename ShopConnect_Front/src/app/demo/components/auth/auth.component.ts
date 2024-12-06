@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
   providers: [MessageService],
+  standalone: true,
 })
 export class AuthComponent implements OnInit {
   loginForm: FormGroup;

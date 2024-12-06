@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-produit',
   templateUrl: './produit.component.html',
   styleUrls: ['./produit.component.scss'],
+  standalone: true,
   providers: [MessageService]
 })
 export class ProduitComponent implements OnInit {
