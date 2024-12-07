@@ -1,22 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  providers: [MessageService],
 })
 export class AuthComponent implements OnInit {
+  isLogin = true; // Basculer entre connexion et inscription
   loginForm: FormGroup;
   registrationForm: FormGroup;
-  showRegistration = false; // Basculer entre Login et Register
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private router: Router,
     private messageService: MessageService
   ) {}
 
@@ -25,47 +26,38 @@ export class AuthComponent implements OnInit {
   }
 
   initForms(): void {
-    // Formulaire Login
+    // Formulaire de connexion
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [false],
     });
 
-    // Formulaire Register
+    // Formulaire d'inscription
     this.registrationForm = this.fb.group({
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      phone: ['', Validators.pattern(/^\+?[0-9]{7,15}$/)], // Numéro de téléphone optionnel mais formaté
-      address: this.fb.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        zipCode: ['', Validators.required],
-        country: ['', Validators.required],
-      }),
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      hasReadTermsAndConditions: [false, Validators.requiredTrue],
+      confirmPassword: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
   login(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Connexion réussie', response);
+        next: () => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Succès',
-            detail: 'Connexion réussie',
+            summary: 'Connexion réussie',
+            detail: 'Vous êtes connecté.',
           });
+          this.router.navigate(['/']); // Redirection après connexion
         },
-        error: (err) => {
-          console.error('Erreur de connexion', err);
+        error: () => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erreur',
-            detail: 'Échec de la connexion',
+            summary: 'Erreur de connexion',
+            detail: 'Vérifiez vos identifiants.',
           });
         },
       });
@@ -74,23 +66,31 @@ export class AuthComponent implements OnInit {
 
   register(): void {
     if (this.registrationForm.valid) {
-      const registrationData = this.registrationForm.value;
-      this.authService.register(registrationData).subscribe({
+      const { username, password, confirmPassword, email } = this.registrationForm.value;
+
+      if (password !== confirmPassword) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur d\'inscription',
+          detail: 'Les mots de passe ne correspondent pas.',
+        });
+        return;
+      }
+
+      this.authService.register({ password, email }).subscribe({
         next: () => {
-          console.log('Inscription réussie');
           this.messageService.add({
             severity: 'success',
-            summary: 'Succès',
-            detail: 'Inscription réussie',
+            summary: 'Inscription réussie',
+            detail: 'Compte créé avec succès.',
           });
-          this.showRegistration = false;
+          this.isLogin = true; // Retour au formulaire de connexion
         },
-        error: (err) => {
-          console.error('Erreur d\'inscription', err);
+        error: () => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Erreur',
-            detail: 'Échec de l\'inscription',
+            summary: 'Erreur d\'inscription',
+            detail: 'Impossible de créer le compte.',
           });
         },
       });

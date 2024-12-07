@@ -57,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Optional<User> existingUser = userService.findUserByEmail(request);
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException(); // 📌 A REVOIR
+            throw new IllegalArgumentException(" A REVOIR");
         }
         User user = User.builder()
                 .firstname(request.getFirstname())

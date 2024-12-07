@@ -19,6 +19,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog'; // Import du module
 import { ToastModule } from 'primeng/toast';  // Import de ToastModule
 
 import { ConfirmationService, MessageService } from 'primeng/api'; // Services de confirmation et de messages
+import { AuthInterceptor } from './demo/components/auth/auth.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'; // Import de l'intercepteur
+
 
 @NgModule({
     declarations: [
@@ -39,7 +42,12 @@ import { ConfirmationService, MessageService } from 'primeng/api'; // Services d
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         ConfirmationService,
         MessageService,  // Fournit MessageService pour les notifications
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withInterceptorsFromDi()), // Support des intercepteurs
+        {
+            provide: 'HTTP_INTERCEPTORS', // Intercepteur déclaré
+            useClass: AuthInterceptor,
+            multi: true,
+        }, provideAnimationsAsync(),
     ],
     bootstrap: [AppComponent]
 })

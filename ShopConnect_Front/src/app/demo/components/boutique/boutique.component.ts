@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BoutiqueService } from '../../service/boutique.service';
 import { Boutique } from '../../model/Boutique';
+import { AuthGuard } from '../auth/auth.guard';
 import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-boutique',

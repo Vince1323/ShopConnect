@@ -1,23 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { ToastModule } from 'primeng/toast';
-import { AuthComponent } from './auth.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AuthRoutingModule } from './auth-routing.module';
-import { MessageService } from 'primeng/api';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthComponent } from './auth.component';
 
 @NgModule({
-  declarations: [AuthComponent],
+  declarations: [AuthComponent,RegisterComponent,LoginComponent],
   imports: [
     CommonModule,
-    FormsModule,
-    ButtonModule,
-    InputTextModule,
-    ToastModule,
-    AuthRoutingModule
-  ],
-  providers: [MessageService]
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    AuthRoutingModule,
+    ReactiveFormsModule,
+    FormsModule
+  ]
 })
 export class AuthModule {}

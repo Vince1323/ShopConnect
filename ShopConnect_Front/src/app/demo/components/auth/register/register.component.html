@@ -1,0 +1,51 @@
+<form (ngSubmit)="register()" [formGroup]="registrationForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Inscription</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input formControlName="firstname" matInput type="text" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input formControlName="lastname" matInput type="text" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Date de naissance</mat-label>
+        <input formControlName="birthDate" matInput type="date" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Téléphone</mat-label>
+        <input formControlName="phone" matInput type="tel" />
+      </mat-form-field>
+      <mat-card-subtitle>Adresse</mat-card-subtitle>
+      <mat-form-field appearance="outline">
+        <mat-label>Rue</mat-label>
+        <input formControlName="address.street" matInput type="text" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ville</mat-label>
+        <input formControlName="address.city" matInput type="text" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Code postal</mat-label>
+        <input formControlName="address.zipCode" matInput type="text" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pays</mat-label>
+        <input formControlName="address.country" matInput type="text" required />
+      </mat-form-field>
+      <mat-checkbox formControlName="hasReadTermsAndConditions" required>
+        J'ai lu et accepté les conditions générales
+      </mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
+        S'inscrire
+      </button>
+      <button mat-button routerLink="/auth/login">Se connecter</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
